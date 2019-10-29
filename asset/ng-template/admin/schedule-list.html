@@ -1,0 +1,115 @@
+<div class="clearfix pi-item-list">
+    <div class="col-lg-12 col-md-12 col-12 clearfix">
+        <div class="page-header">
+            <h1>{{condition.title}}</h1>
+        </div>
+        <div class="alert alert-info" ng-if="paginator.title">
+            {{paginator.title}}
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-12 clearfix">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{'SEARCH' | translate}}</h3>
+            </div>
+            <div class="card-body">
+                <form id="list-filter" ng-submit="filterAction()">
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-4 clearfix">
+                            <label class="col-lg-4 col-md-4 control-label">
+                                {{'STATUS' | translate}}
+                            </label>
+                            <div class="col-lg-8 col-md-8 js-form-element">
+                                <select class="form-control" ng-model="filter.status" ng-change="filterAction()"
+                                        ng-model-options="{ debounce: 10000 }">
+                                    <option value=""></option>
+                                    <option value="all">{{'ALL' | translate}}</option>
+                                    <option value="1">{{'SUCCESS' | translate}}</option>
+                                    <option value="2">{{'WAITING' | translate}}</option>
+                                    <option value="3">{{'IN_PROGRESS' | translate}}</option>
+                                    <option value="5">{{'REJECTED' | translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 clearfix">
+                            <label class="col-md-4 control-label">
+                                {{'DATE_START' | translate}}
+                            </label>
+                            <div class="col-lg-8 col-md-8 js-form-element">
+                                <input type="text" id="dateFrom" class="form-control" ng-model="filter.dateFrom"
+                                       ng-change="filterAction()"
+                                       ng-model-options="{ debounce: 10000 }">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 clearfix">
+                            <label class="col-lg-4 col-md-4 control-label">
+                                {{'DATE_END' | translate}}
+                            </label>
+                            <div class="col-lg-8 col-md-8 js-form-element">
+                                <input type="text" id="dateTo" class="form-control" ng-model="filter.dateTo"
+                                       ng-change="filterAction()"
+                                       ng-model-options="{ debounce: 10000 }">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 clearfix">
+                            <label class="col-lg-4 col-md-4 control-label">
+                                {{'LIMIT' | translate}}
+                            </label>
+                            <div class="col-lg-8 col-md-8 js-form-element">
+                                <select class="form-control" ng-model="filter.limit" ng-change="filterAction()"
+                                        ng-model-options="{ debounce: 10000 }">
+                                    <option value="">{{'DEFAULT' | translate}}</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 clearfix">
+                            <button class="btn btn-info">
+                                <i class="fa fa-search"></i> {{'SEARCH' | translate}}
+                            </button>
+                            <a class="btn btn-info reload-link" ng-click="reloadRoute();">
+                                <i class="fa fa-refresh"></i> {{'REFRESH' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-12 col-md-12 col-12 clearfix">
+        <div class="clearfix">
+            <div ng-show="list.length">
+                <table id="item-list" class="table table-striped table-bordered table-hover table-sm mt-3 mb-3">
+                    <tr>
+                        <th>{{'ID' | translate}}</th>
+                        <th>{{'ACTION' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="item in list"
+                        id="schedule-{{item.id}}"
+                        class="{{item.status_class_table}}"
+                        data-edit="{{item.urlReserve}}"
+                        data-reject="{{item.urlReject}}"
+                        data-confirm="{{item.urlConfirm}}"
+                        data-id="schedule-{{item.id}}"
+                    >
+                        <td>{{item.id}}</td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="pi-paginator">
+                    <pagination ng-if="paginator.count > paginator.limit"
+                                total-items="paginator.count" page="paginator.page" max-size="10"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                boundary-links="true" items-per-page="paginator.limit">
+                    </pagination>
+                </div>
+            </div>
+            <div class="alert alert-danger mt-3 mb-3" ng-if="!list.length">
+                {{'EMPTY_LIST' | translate}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<?php $this->css($this->assetModule('css/admin.css')); ?>
+<div class="clearfix">
+    <h1><?php _e('Provider list'); ?></h1>
+    <?php if (!empty($providerList)) { ?>
+        <table class="table table-striped table-bordered table-hover table-sm mt-3 mb-3">
+            <tr>
+                <th><?php _e('ID'); ?></th>
+                <th><?php _e('Title'); ?></th>
+                <th><?php _e('Status'); ?></th>
+                <th><?php _e('Action'); ?></th>
+            </tr>
+            <?php foreach ($providerList as $provider) { ?>
+                <?php if ($provider['status'] == 1) {
+                    $badgeIdClass = 'badge-success';
+                } else {
+                    $badgeIdClass = 'badge-warning';
+                } ?>
+                <tr>
+                    <td>
+                    <span class="badge <?php echo $badgeIdClass; ?>">
+                        <?php echo $this->escape($provider['id']); ?>
+                    </span>
+                    </td>
+                    <td><?php echo $this->escape($provider['title']); ?></td>
+                    <td><?php echo $this->escape($provider['status_view']); ?></td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" title="<?php _e('Edit'); ?>"
+                           href="<?php echo $this->url('', ['action' => 'update', 'id' => $provider['id']]); ?>">
+                            <i class="fa fa-edit"></i> <?php _e('Edit'); ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </table>
+    <?php } else {?>
+        <div class="alert alert-danger mt-3 mb-3">
+            <?php _e('Please add provider !'); ?>
+        </div>
+    <?php } ?>
+</div>

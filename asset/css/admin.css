@@ -1,0 +1,17 @@
+/* spinner */
+.ajax-spinner {
+    position: absolute;
+    top: 0;
+    z-index: 99999999;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+    opacity: 0.9;
+    height: 100%;
+}
+
+.ajax-spinner img {
+    opacity: 1 !important;
+    position: fixed;
+    top: 150px;
+}

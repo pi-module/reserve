@@ -1,0 +1,49 @@
+<?php
+// Load header files
+$this->jQuery(
+    [
+        'ui/jquery-ui.min.js',
+        'ui/jquery-ui.min.css',
+    ]
+);
+$this->angular(
+    [
+        'angular-route.js',
+        'ui-bootstrap-custom-tpls-0.7.0.js',
+        'pi.js',
+        'i18n',
+    ]
+);
+$this->css($this->assetModule('css/admin.css'));
+?>
+<div class="row clearfix pi-item-angular">
+    <div class="ajax-spinner">
+        <img src="<?php echo $this->assetModule('image/spinner.gif'); ?>" class="ajax-spinner-loader"/>
+    </div>
+</div>
+<script>
+    angular
+        .module('reserve', ['ngRoute', 'ui.bootstrap', 'pi'])
+        .constant('config', {
+            template: 'schedule-list',
+            urlRoot: '<?php echo Pi::url($this->url('', ['controller' => 'schedule', 'action' => 'var'])); ?>'.replace(/var\/?$/, ''),
+            urlExport: '<?php echo Pi::url($this->url('', ['controller' => 'export', 'action' => 'generate', 'part' => 'schedule'])); ?>',
+            assetRoot: '<?php echo $this->assetModule('ng-template/admin/', '', false); ?>',
+            t: {
+                ALL: '<?php _e('All'); ?>',
+                EMPTY_LIST: '<?php _e('List is empty'); ?>',
+                ACTION: '<?php _e('Action'); ?>',
+                SEARCH: '<?php _e('Search'); ?>',
+                LIMIT: '<?php _e('Limit'); ?>',
+                EXPORT_FILE: '<?php _e('Export as file'); ?>',
+                EXPORT_FILE_DESC: '<?php _e('Get export file from select filters'); ?>',
+                EXTRA_INFORMATION: '<?php _e('Extra information'); ?>',
+                DATE_START: '<?php _e('Date start'); ?>',
+                DATE_END: '<?php _e('Date end'); ?>',
+                REFRESH: '<?php _e('Refresh'); ?>',
+                ID: '<?php _e('ID'); ?>',
+                AMOUNT: '<?php _e('Amount'); ?>',
+            },
+        })
+</script>
+<script src="<?php echo $this->assetModule('js/list.js'); ?>"></script>
