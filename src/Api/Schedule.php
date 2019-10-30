@@ -21,6 +21,7 @@ use Zend\Db\Sql\Predicate\Expression;
  * Pi::api('schedule', 'Reserve')->getSchedule($parameter, $type);
  * Pi::api('schedule', 'Reserve')->canonizeSchedule($schedule);
  * Pi::api('schedule', 'Reserve')->getList($params);
+ * Pi::api('schedule', 'Reserve')->dateList($params);
  */
 
 class Schedule extends AbstractApi
@@ -182,5 +183,30 @@ class Schedule extends AbstractApi
         ];
 
         return $result;
+    }
+
+    public function dateList($params = [])
+    {
+        // Set list
+        $list = ['' => '' ];
+
+        // Set times
+        $start = isset($params['start']) ? $params['start'] : date("Y-m-d");
+        $end = isset($params['end']) ? $params['end'] : date('Y-m-d', strtotime('+3 months'));
+
+        // Make time
+        $period = new \DatePeriod(
+            new \DateTime($start),
+            new \DateInterval('P1D'),
+            new \DateTime($end)
+        );
+
+        // Make time list
+        foreach ($period as $key => $value) {
+            $date = $value->format('Y-m-d');
+            $list[$date] = _date(strtotime($date), ['pattern' => 'yyyy/MM/dd']);
+        }
+
+        return $list;
     }
 }

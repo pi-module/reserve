@@ -33,7 +33,37 @@ class ScheduleFilter extends InputFilter
             );
         }
 
+        // date
+        $this->add(
+            [
+                'name'     => 'date',
+                'required' => true,
+                'filters'  => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                ],
+                'validators' => [
+                    new \Module\Reserve\Validator\SetValue,
+                ],
+            ]
+        );
 
+        // hour
+        $this->add(
+            [
+                'name'     => 'hour',
+                'required' => true,
+                'filters'  => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                ],
+                'validators' => [
+                    new \Module\Reserve\Validator\SetValue,
+                ],
+            ]
+        );
 
     }
 }

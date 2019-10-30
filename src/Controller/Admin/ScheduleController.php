@@ -29,7 +29,6 @@ class ScheduleController extends ActionController
         $config = Pi::service('registry')->config->read($module);
 
 
-
         // Set view
         $this->view()->setTemplate('schedule-index');
         $this->view()->assign('config', $config);
@@ -39,7 +38,7 @@ class ScheduleController extends ActionController
     {
         // Get info from url
         $module = $this->params('module');
-        $id = $this->params('id');
+        $id     = $this->params('id');
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
@@ -47,11 +46,11 @@ class ScheduleController extends ActionController
         // Set option
         $option = [
             'section' => 'admin',
-            'isNew' => intval($id) > 0 ? false : true,
+            'isNew'   => intval($id) > 0 ? false : true,
         ];
 
         // Set form
-        $form = new ScheduleForm('provider', $option);
+        $form = new ScheduleForm('schedule', $option);
         $form->setAttribute('enctype', 'multipart/form-data');
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
@@ -61,7 +60,6 @@ class ScheduleController extends ActionController
                 $values = $form->getData();
 
                 d($values);
-
 
 
                 // Jump
@@ -74,8 +72,6 @@ class ScheduleController extends ActionController
                 $form->setData($provider);
             }
         }
-
-
 
         // Set view
         $this->view()->setTemplate('schedule-update');
@@ -90,7 +86,6 @@ class ScheduleController extends ActionController
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
-
 
 
         // Set view
@@ -110,8 +105,8 @@ class ScheduleController extends ActionController
         }
 
         // Get info from url
-        $params['module']            = $this->params('module');
-        $params['page']              = $this->params('page', 1);
+        $params['module'] = $this->params('module');
+        $params['page']   = $this->params('page', 1);
 
         // Get request list
         return Pi::api('schedule', 'Reserve')->getList($params);

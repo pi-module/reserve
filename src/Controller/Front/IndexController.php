@@ -20,31 +20,18 @@ class IndexController extends ActionController
 {
     public function indexAction()
     {
+        // Check user is login or not
+        Pi::service('authentication')->requireLogin();
+
         // Get info from url
         $module = $this->params('module');
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
-
 
 
         // Set view
         $this->view()->setTemplate('reserve-index');
-        $this->view()->assign('config', $config);
-    }
-
-    public function updateAction()
-    {
-        // Get info from url
-        $module = $this->params('module');
-
-        // Get config
-        $config = Pi::service('registry')->config->read($module);
-
-
-
-        // Set view
-        $this->view()->setTemplate('reserve-update');
         $this->view()->assign('config', $config);
     }
 }

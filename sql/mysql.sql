@@ -10,9 +10,11 @@ CREATE TABLE `{schedule}`
     `update_by`         INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_create`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_update`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-    `reserve_start`     INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-    `reserve_end`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-    `reserve_period`    INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+
+    'request_time'      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+    'request_from'      DATETIME            NULL,
+    'request_to'        DATETIME            NULL,
+
     `amount`            DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `payment_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
     `reserve_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',

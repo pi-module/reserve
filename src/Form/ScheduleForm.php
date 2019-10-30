@@ -13,6 +13,7 @@
 
 namespace Module\Reserve\Form;
 
+use pi;
 use Pi\Form\Form as BaseForm;
 
 class ScheduleForm extends BaseForm
@@ -49,6 +50,37 @@ class ScheduleForm extends BaseForm
                 ]
             );
         }
+
+        // date
+        $this->add(
+            [
+                'name'    => 'date',
+                'type'    => 'select',
+                'options' => [
+                    'label'         => __('Display mode'),
+                    'value_options' => Pi::api('schedule', 'Reserve')->dateList(),
+                ],
+                'attributes' => [
+                    'required'    => true,
+                    'class' => 'date-list',
+                ],
+            ]
+        );
+
+        // hour
+        $this->add(
+            [
+                'name'       => 'hour',
+                'type'       => 'description',
+                'options'    => [
+                    'label' => __('Select hour'),
+                ],
+                'attributes' => [
+                    'description' => '<div class="hour-list"></div>',
+                    'required'    => true,
+                ],
+            ]
+        );
 
         // Save
         $this->add(

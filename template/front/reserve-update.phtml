@@ -1,5 +1,45 @@
-<?php $this->css($this->assetModule('css/front.css')); ?>
+<?php
+$this->jQuery();
+$this->css($this->assetModule('css/front.css'));
+?>
 <div class="clearfix">
-    <h1><?php _e('Reserve new schedule'); ?></h1>
-
+    <div class="calendar dark">
+        <div class="calendar_header">
+            <h1 class="header_title">Welcome back</h1>
+            <p class="header_copy">Please select your day and hour for reserve schedule</p>
+        </div>
+        <div class="calendar_plan">
+            <div class="cl_plan">
+                <div class="cl_title">Today</div>
+                <div class="cl_copy"><?php echo _date($time, ['format' => 'l j F Y']) ?></div>
+            </div>
+        </div>
+        <div class="calendar_events">
+            <?php echo $this->form($form, 'vertical'); ?>
+        </div>
+    </div>
 </div>
+<script>
+    $(document).ready(function ($) {
+        $('.date-list').change(function () {
+            var date = $('.date-list').val();
+            var url = 'http://localhost/local/pi/pi27/www/reserve/update/hour/date-' + date;
+            console.log(url);
+            $.getJSON(url).done(function (result) {
+                $('.hour-list').html('');
+                $.each(result, function (index, value) {
+                    var html = '<div class="event_item">' +
+                        '<div class="form-check">\n' +
+                        '<input class="form-check-input" type="radio" name="hour" value="' + value.time + '" id="hour-' + index + '">\n' +
+                        '<label class="form-check-label" for="hour-' + index + '">\n' +
+                        '<div class="ei_Title">' + value.time + '</div>\n' +
+                        '<div class="ei_Copy">' + value.title + '</div>\n' +
+                        '</label>\n' +
+                        '</div>' +
+                        '</div>';
+                    $('.hour-list').append(html);
+                });
+            });
+        });
+    });
+</script>
