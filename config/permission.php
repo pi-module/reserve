@@ -21,6 +21,14 @@ return [
             'title'  => _a('Schedule'),
             'access' => [],
         ],
+        'holiday'   => [
+            'title'  => _a('Holiday'),
+            'access' => [],
+        ],
+        'time'   => [
+            'title'  => _a('Time'),
+            'access' => [],
+        ],
         'provider'   => [
             'title'  => _a('Provider'),
             'access' => [],

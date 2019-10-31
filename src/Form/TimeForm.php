@@ -13,10 +13,10 @@
 
 namespace Module\Reserve\Form;
 
-use pi;
+use Pi;
 use Pi\Form\Form as BaseForm;
 
-class ScheduleForm extends BaseForm
+class TimeForm extends BaseForm
 {
     public function __construct($name = null, $option = [])
     {
@@ -27,30 +27,13 @@ class ScheduleForm extends BaseForm
     public function getInputFilter()
     {
         if (!$this->filter) {
-            $this->filter = new ScheduleFilter($this->option);
+            $this->filter = new TimeFilter($this->option);
         }
         return $this->filter;
     }
 
     public function init()
     {
-        // user_id
-        if ($this->option['isNew'] && $this->option['section'] == 'admin') {
-            $this->add(
-                [
-                    'name'       => 'user_id',
-                    'type'       => 'Module\Reserve\Form\Element\UserList',
-                    'options'    => [
-                        'label' => __('User'),
-                    ],
-                    'attributes' => [
-                        'class'    => 'chosen-select',
-                        'required' => true,
-                    ],
-                ]
-            );
-        }
-
         // date
         $this->add(
             [
@@ -62,22 +45,53 @@ class ScheduleForm extends BaseForm
                 ],
                 'attributes' => [
                     'required'    => true,
-                    'class' => 'date-list chosen-select',
+                    'class' => 'date-list',
                 ],
             ]
         );
 
-        // hour
+        // start
         $this->add(
             [
-                'name'       => 'hour',
-                'type'       => 'description',
-                'options'    => [
-                    'label' => __('Select hour'),
+                'name'    => 'start',
+                'type'    => 'select',
+                'options' => [
+                    'label'         => __('Time start'),
+                    'value_options' => Pi::api('api', 'Reserve')->timeList(),
                 ],
                 'attributes' => [
-                    'description' => '<div class="hour-list"></div>',
                     'required'    => true,
+                    'class' => 'date-list',
+                ],
+            ]
+        );
+
+        // end
+        $this->add(
+            [
+                'name'    => 'end',
+                'type'    => 'select',
+                'options' => [
+                    'label'         => __('Time end'),
+                    'value_options' => Pi::api('api', 'Reserve')->timeList(),
+                ],
+                'attributes' => [
+                    'required'    => true,
+                    'class' => 'date-list',
+                ],
+            ]
+        );
+
+        // provider_id
+        $this->add(
+            [
+                'name'       => 'provider_id',
+                'type'       => 'Module\Reserve\Form\Element\ProviderList',
+                'options'    => [
+                    'label' => __('Provider'),
+                ],
+                'attributes' => [
+                    'required' => true,
                 ],
             ]
         );

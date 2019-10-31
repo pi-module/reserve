@@ -10,11 +10,9 @@ CREATE TABLE `{schedule}`
     `update_by`         INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_create`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_update`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-
-    'request_time'      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-    'request_from'      DATETIME            NULL,
-    'request_to'        DATETIME            NULL,
-
+    `request_time`      DATE                NULL     DEFAULT NULL,
+    `request_from`      VARCHAR(8)          NOT NULL DEFAULT '00:00',
+    `request_to`        VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `amount`            DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `payment_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
     `reserve_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
@@ -51,5 +49,23 @@ CREATE TABLE `{service}`
     `title`  VARCHAR(255)        NOT NULL DEFAULT '',
     `amount` DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `{holiday}`
+(
+    `id`          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `provider_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `date`        DATE             NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `{time}`
+(
+    `id`          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `provider_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+    `date`        DATE             NULL     DEFAULT NULL,
+    `start`       VARCHAR(8)       NOT NULL DEFAULT '00:00',
+    `end`         VARCHAR(8)       NOT NULL DEFAULT '00:00',
     PRIMARY KEY (`id`)
 );

@@ -16,11 +16,7 @@ $this->angular(
 );
 $this->css($this->assetModule('css/admin.css'));
 ?>
-<div class="row clearfix pi-item-angular">
-    <div class="ajax-spinner">
-        <img src="<?php echo $this->assetModule('image/spinner.gif'); ?>" class="ajax-spinner-loader"/>
-    </div>
-</div>
+<div class="row clearfix pi-item-angular"></div>
 <script>
     angular
         .module('reserve', ['ngRoute', 'ui.bootstrap', 'pi'])

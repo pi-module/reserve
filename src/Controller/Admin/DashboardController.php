@@ -26,8 +26,6 @@ class DashboardController extends ActionController
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
-
-
         // Set view
         $this->view()->setTemplate('dashboard-index');
         $this->view()->assign('config', $config);

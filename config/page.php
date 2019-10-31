@@ -24,6 +24,16 @@ return [
             'permission' => 'schedule',
         ],
         [
+            'label'      => _a('Holiday'),
+            'controller' => 'holiday',
+            'permission' => 'holiday',
+        ],
+        [
+            'label'      => _a('Time'),
+            'controller' => 'time',
+            'permission' => 'time',
+        ],
+        [
             'label'      => _a('Provider'),
             'controller' => 'provider',
             'permission' => 'provider',

@@ -13,10 +13,10 @@
 
 namespace Module\Reserve\Form;
 
-use pi;
+use Pi;
 use Pi\Form\Form as BaseForm;
 
-class ScheduleForm extends BaseForm
+class HolidayForm extends BaseForm
 {
     public function __construct($name = null, $option = [])
     {
@@ -27,57 +27,39 @@ class ScheduleForm extends BaseForm
     public function getInputFilter()
     {
         if (!$this->filter) {
-            $this->filter = new ScheduleFilter($this->option);
+            $this->filter = new HolidayFilter($this->option);
         }
         return $this->filter;
     }
 
     public function init()
     {
-        // user_id
-        if ($this->option['isNew'] && $this->option['section'] == 'admin') {
-            $this->add(
-                [
-                    'name'       => 'user_id',
-                    'type'       => 'Module\Reserve\Form\Element\UserList',
-                    'options'    => [
-                        'label' => __('User'),
-                    ],
-                    'attributes' => [
-                        'class'    => 'chosen-select',
-                        'required' => true,
-                    ],
-                ]
-            );
-        }
-
         // date
         $this->add(
             [
-                'name'    => 'date',
-                'type'    => 'select',
-                'options' => [
+                'name'       => 'date',
+                'type'       => 'select',
+                'options'    => [
                     'label'         => __('Date'),
                     'value_options' => Pi::api('api', 'Reserve')->dateList(),
                 ],
                 'attributes' => [
-                    'required'    => true,
-                    'class' => 'date-list chosen-select',
+                    'required' => true,
+                    'class'    => 'date-list',
                 ],
             ]
         );
 
-        // hour
+        // provider_id
         $this->add(
             [
-                'name'       => 'hour',
-                'type'       => 'description',
+                'name'       => 'provider_id',
+                'type'       => 'Module\Reserve\Form\Element\ProviderList',
                 'options'    => [
-                    'label' => __('Select hour'),
+                    'label' => __('Provider'),
                 ],
                 'attributes' => [
-                    'description' => '<div class="hour-list"></div>',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ]
         );

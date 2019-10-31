@@ -47,6 +47,52 @@ return [
                 ],
             ],
         ],
+        'holiday'   => [
+            'label'      => _a('Holiday'),
+            'route'      => 'admin',
+            'controller' => 'holiday',
+            'action'     => 'index',
+            'permission' => [
+                'resource' => 'holiday',
+            ],
+            'pages'      => [
+                'list'   => [
+                    'label'      => _a('Holiday list'),
+                    'route'      => 'admin',
+                    'controller' => 'holiday',
+                    'action'     => 'index',
+                ],
+                'manage' => [
+                    'label'      => _a('Holiday add / edit'),
+                    'route'      => 'admin',
+                    'controller' => 'holiday',
+                    'action'     => 'update',
+                ],
+            ],
+        ],
+        'time'   => [
+            'label'      => _a('Time'),
+            'route'      => 'admin',
+            'controller' => 'time',
+            'action'     => 'index',
+            'permission' => [
+                'resource' => 'time',
+            ],
+            'pages'      => [
+                'list'   => [
+                    'label'      => _a('Time list'),
+                    'route'      => 'admin',
+                    'controller' => 'time',
+                    'action'     => 'index',
+                ],
+                'manage' => [
+                    'label'      => _a('Time add / edit'),
+                    'route'      => 'admin',
+                    'controller' => 'time',
+                    'action'     => 'update',
+                ],
+            ],
+        ],
         'provider'   => [
             'label'      => _a('Provider'),
             'route'      => 'admin',
