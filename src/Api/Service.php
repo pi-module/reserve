@@ -18,9 +18,9 @@ use Pi\Application\Api\AbstractApi;
 use Zend\Db\Sql\Predicate\Expression;
 
 /*
- * Pi::api('service', 'Reserve')->getService($parameter, $type);
- * Pi::api('service', 'Reserve')->canonizeService($service);
- * Pi::api('service', 'Reserve')->getList($params);
+ * Pi::api('service', 'reserve')->getService($parameter, $type);
+ * Pi::api('service', 'reserve')->canonizeService($service);
+ * Pi::api('service', 'reserve')->getList($params);
  */
 
 class Service extends AbstractApi

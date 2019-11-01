@@ -23,6 +23,21 @@ class Schedule extends Model
     protected $columns
         = [
             'id',
-
+            'user_id',
+            'provider_id',
+            'service_id',
+            'schedule_previous',
+            'schedule_next',
+            'create_by',
+            'update_by',
+            'time_create',
+            'time_update',
+            'request_time',
+            'request_date',
+            'request_from',
+            'request_to',
+            'amount',
+            'payment_status',
+            'reserve_status',
         ];
 }

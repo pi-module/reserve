@@ -15,7 +15,7 @@ namespace Module\Reserve\Model;
 
 use Pi\Application\Model\Model;
 
-class History extends Model
+class Status extends Model
 {
     /**
      * {@inheritDoc}
@@ -23,15 +23,8 @@ class History extends Model
     protected $columns
         = [
             'id',
-            'user_id',
-            'provider_id',
-            'schedule_id',
-            'create_by',
-            'update_by',
-            'time_create',
-            'time_update',
-            'status',
-            'description',
-            'image',
+            'type',
+            'title',
+            'value',
         ];
 }

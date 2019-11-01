@@ -41,7 +41,7 @@ class TimeForm extends BaseForm
                 'type'    => 'select',
                 'options' => [
                     'label'         => __('Date'),
-                    'value_options' => Pi::api('api', 'Reserve')->dateList(),
+                    'value_options' => Pi::api('api', 'reserve')->dateList(),
                 ],
                 'attributes' => [
                     'required'    => true,
@@ -57,7 +57,7 @@ class TimeForm extends BaseForm
                 'type'    => 'select',
                 'options' => [
                     'label'         => __('Time start'),
-                    'value_options' => Pi::api('api', 'Reserve')->timeList(),
+                    'value_options' => Pi::api('api', 'reserve')->timeList(),
                 ],
                 'attributes' => [
                     'required'    => true,
@@ -73,7 +73,7 @@ class TimeForm extends BaseForm
                 'type'    => 'select',
                 'options' => [
                     'label'         => __('Time end'),
-                    'value_options' => Pi::api('api', 'Reserve')->timeList(),
+                    'value_options' => Pi::api('api', 'reserve')->timeList(),
                 ],
                 'attributes' => [
                     'required'    => true,

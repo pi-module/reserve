@@ -44,7 +44,7 @@ class HolidayController extends ActionController
 
         // Make list
         foreach ($rowset as $row) {
-            $holidayList[$row->id] = Pi::api('holiday', 'Reserve')->canonizeHoliday($row);
+            $holidayList[$row->id] = Pi::api('holiday', 'reserve')->canonizeHoliday($row);
         }
 
         // Get count
@@ -114,7 +114,7 @@ class HolidayController extends ActionController
             }
         } else {
             if ($id) {
-                $holiday = Pi::api('holiday', 'Reserve')->getHoliday($id);
+                $holiday = Pi::api('holiday', 'reserve')->getHoliday($id);
                 $form->setData($holiday);
             }
         }

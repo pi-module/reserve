@@ -18,9 +18,9 @@ use Pi\Application\Api\AbstractApi;
 use Zend\Db\Sql\Predicate\Expression;
 
 /*
- * Pi::api('holiday', 'Reserve')->getHoliday($parameter, $type);
- * Pi::api('holiday', 'Reserve')->canonizeHoliday($holiday);
- * Pi::api('holiday', 'Reserve')->getList($params);
+ * Pi::api('holiday', 'reserve')->getHoliday($parameter, $type);
+ * Pi::api('holiday', 'reserve')->canonizeHoliday($holiday);
+ * Pi::api('holiday', 'reserve')->getList($params);
  */
 
 class Holiday extends AbstractApi
@@ -49,13 +49,26 @@ class Holiday extends AbstractApi
 
     public function getList($params = [])
     {
+        // Set info
         $list    = [];
         $where   = [];
         $order   = ['date DESC', 'id DESC'];
+
+        // Set provider_id
+        if (isset($params['provider_id']) && intval($params['provider_id']) > 0) {
+            $where['provider_id'] = $params['provider_id'];
+        }
+
+        // Set time limit
+        if (isset($params['days']) && intval($params['days']) > 0) {
+            $where['date BETWEEN ?'] = new Expression(sprintf('%s AND %s', $params['start'], $params['end']));
+        }
+
+        // Select
         $select  = Pi::model('holiday', $this->getModule())->select()->where($where)->order($order);
         $rowSet  = Pi::model('holiday', $this->getModule())->selectWith($select);
         foreach ($rowSet as $row) {
-            $list[$row->id] = $this->canonizeHoliday($row);
+            $list[$row->date] = $this->canonizeHoliday($row);
         }
 
         return $list;

@@ -18,9 +18,9 @@ use Pi\Application\Api\AbstractApi;
 use Zend\Db\Sql\Predicate\Expression;
 
 /*
- * Pi::api('provider', 'Reserve')->getProvider($parameter, $type);
- * Pi::api('provider', 'Reserve')->canonizeProvider($provider);
- * Pi::api('provider', 'Reserve')->getList($params);
+ * Pi::api('provider', 'reserve')->getProvider($parameter, $type);
+ * Pi::api('provider', 'reserve')->canonizeProvider($provider);
+ * Pi::api('provider', 'reserve')->getList($params);
  */
 
 class Provider extends AbstractApi

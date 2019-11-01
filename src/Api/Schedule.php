@@ -18,9 +18,11 @@ use Pi\Application\Api\AbstractApi;
 use Zend\Db\Sql\Predicate\Expression;
 
 /*
- * Pi::api('schedule', 'Reserve')->getSchedule($parameter, $type);
- * Pi::api('schedule', 'Reserve')->canonizeSchedule($schedule);
- * Pi::api('schedule', 'Reserve')->getList($params);
+ * Pi::api('schedule', 'reserve')->getSchedule($parameter, $type);
+ * Pi::api('schedule', 'reserve')->canonizeSchedule($schedule);
+ * Pi::api('schedule', 'reserve')->getList($params);
+ * Pi::api('schedule', 'reserve')->getListByDate($params);
+ * Pi::api('schedule', 'reserve')->checkPayment();
  */
 
 class Schedule extends AbstractApi
@@ -61,7 +63,7 @@ class Schedule extends AbstractApi
         // Set info
         $limit  = isset($params['limit']) ? $params['limit'] : 25;
         $offset = (int)($params['page'] - 1) * $limit;
-        $order  = ['schedule.reserve_start desc', 'schedule.id desc'];
+        $order  = ['schedule.request_from  desc', 'schedule.id desc'];
         $where  = ['account.active' => 1];
         if (isset($params['user_id']) && !empty($params['user_id'])) {
             $where['schedule.user_id'] = $params['user_id'];
@@ -72,8 +74,8 @@ class Schedule extends AbstractApi
         if (isset($params['service_id']) && !empty($params['service_id'])) {
             $where['schedule.service_id'] = $params['service_id'];
         }
-        if (isset($params['reserve_start']) && !empty($params['reserve_start'])) {
-            $where['schedule.reserve_start'] = $params['reserve_start'];
+        if (isset($params['request_from ']) && !empty($params['request_from '])) {
+            $where['schedule.request_from '] = $params['request_from '];
         }
         if (isset($params['payment_status']) && !empty($params['payment_status'])) {
             $where['schedule.payment_status'] = $params['payment_status'];
@@ -182,5 +184,48 @@ class Schedule extends AbstractApi
         ];
 
         return $result;
+    }
+
+    public function getListByDate($params)
+    {
+        // Set info
+        $list  = [];
+        $where = [
+            'request_date'   => $params['date'],
+            'reserve_status' => [1, 2, 3],
+        ];
+        if (isset($params['service_id']) && intval($params['service_id']) > 0) {
+            $where['service_id'] = $params['service_id'];
+        }
+        if (isset($params['provider_id']) && intval($params['provider_id']) > 0) {
+            $where['provider_id'] = $params['provider_id'];
+        }
+
+        // Select
+        $select = Pi::model('schedule', $this->getModule())->select()->where($where);
+        $rowSet = Pi::model('schedule', $this->getModule())->selectWith($select);
+        foreach ($rowSet as $row) {
+            $list[$row->id] = $this->canonizeSchedule($row);
+        }
+
+        return $list;
+    }
+
+    public function checkPayment()
+    {
+        // Get config
+        $config = Pi::service('registry')->config->read('reserve');
+
+        // Update schedule
+        Pi::model('schedule', $this->getModule())->update(
+            [
+                'reserve_status' => 0,
+            ],
+            [
+                'reserve_status'   => 2,
+                'payment_status'   => 0,
+                'request_time < ?' => (time() - (60 * $config['payment_reserve'])),
+            ]
+        );
     }
 }

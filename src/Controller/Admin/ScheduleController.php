@@ -28,6 +28,8 @@ class ScheduleController extends ActionController
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
+        // Check payment and update
+        Pi::api('schedule', 'reserve')->checkPayment();
 
         // Set view
         $this->view()->setTemplate('schedule-index');
@@ -68,15 +70,19 @@ class ScheduleController extends ActionController
             }
         } else {
             if ($id) {
-                $provider = Pi::api('provider', 'Reserve')->getProvider($id);
+                $provider = Pi::api('provider', 'reserve')->getProvider($id);
                 $form->setData($provider);
             }
         }
+
+        // Set hour url
+        $hourUrl = Pi::url($this->url('', ['action' => 'hour']));
 
         // Set view
         $this->view()->setTemplate('schedule-update');
         $this->view()->assign('config', $config);
         $this->view()->assign('form', $form);
+        $this->view()->assign('hourUrl', $hourUrl);
     }
 
     public function viewAction()
@@ -86,6 +92,9 @@ class ScheduleController extends ActionController
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
+
+        // Check payment and update
+        Pi::api('schedule', 'reserve')->checkPayment();
 
 
         // Set view
@@ -109,6 +118,70 @@ class ScheduleController extends ActionController
         $params['page']   = $this->params('page', 1);
 
         // Get request list
-        return Pi::api('schedule', 'Reserve')->getList($params);
+        return Pi::api('schedule', 'reserve')->getList($params);
+    }
+
+    public function hourAction()
+    {
+        // Check payment and update
+        Pi::api('schedule', 'reserve')->checkPayment();
+
+        // Set default result
+        $result = [
+            'result' => false,
+            'data'   => [],
+            'error'  => [
+                'code'    => 1,
+                'message' => __('Nothing selected'),
+            ],
+        ];
+
+        // Get info from url
+        $date     = $this->params('date');
+        $provider = $this->params('provider');
+        $service  = $this->params('service');
+
+        // Set params
+        $params = ['type' => 'check'];
+
+        // Set date to params
+        if (!empty($date)) {
+            $params['date'] = $date;
+        } else {
+            $result['error']['message'] = __('Please select date');
+            return $result;
+        }
+
+        // Set provider to params
+        if (!empty($provider)) {
+            $params['provider_id'] = $provider;
+        } else {
+            $result['error']['message'] = __('Please select provider');
+            return $result;
+        }
+
+        // Set service to params
+        if (!empty($service)) {
+            $params['service_id'] = $service;
+        } else {
+            $result['error']['message'] = __('Please select service');
+            return $result;
+        }
+
+        // Get time list
+        $list = Pi::api('api', 'reserve')->timeList($params);
+        if (!empty($list)) {
+            $result = [
+                'result' => true,
+                'data'   => $list,
+                'error'  => [],
+                'p' => $params,
+            ];
+
+        } else {
+            $result['error']['message'] = __('No any reserve time available on your selected date');
+        }
+
+        return $result;
     }
 }

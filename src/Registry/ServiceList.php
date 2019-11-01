@@ -18,14 +18,14 @@ use Pi;
 use Pi\Application\Registry\AbstractRegistry;
 
 /*
- * Pi::registry('ServiceList', 'reserve')->clear();
- * Pi::registry('ServiceList', 'reserve')->read();
+ * Pi::registry('serviceList', 'reserve')->clear();
+ * Pi::registry('serviceList', 'reserve')->read();
  */
 
 class ServiceList extends AbstractRegistry
 {
     /** @var string Module name */
-    protected $module = 'b2b';
+    protected $module = 'reserve';
 
     /**
      * {@inheritDoc}
@@ -71,6 +71,6 @@ class ServiceList extends AbstractRegistry
      */
     protected function loadDynamic($options = [])
     {
-        return Pi::api('service', 'Reserve')->getList();
+        return Pi::api('service', 'reserve')->getList();
     }
 }

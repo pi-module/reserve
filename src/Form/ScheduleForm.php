@@ -51,6 +51,36 @@ class ScheduleForm extends BaseForm
             );
         }
 
+        // provider_id
+        $this->add(
+            [
+                'name'       => 'provider_id',
+                'type'       => 'Module\Reserve\Form\Element\ProviderList',
+                'options'    => [
+                    'label' => __('Provider'),
+                ],
+                'attributes' => [
+                    'class'    => 'provider-list chosen-select',
+                    'required' => true,
+                ],
+            ]
+        );
+
+        // service_id
+        $this->add(
+            [
+                'name'       => 'service_id',
+                'type'       => 'Module\Reserve\Form\Element\ServiceList',
+                'options'    => [
+                    'label' => __('Service'),
+                ],
+                'attributes' => [
+                    'class'    => 'service-list chosen-select',
+                    'required' => true,
+                ],
+            ]
+        );
+
         // date
         $this->add(
             [
@@ -58,7 +88,7 @@ class ScheduleForm extends BaseForm
                 'type'    => 'select',
                 'options' => [
                     'label'         => __('Date'),
-                    'value_options' => Pi::api('api', 'Reserve')->dateList(),
+                    'value_options' => Pi::api('api', 'reserve')->dateList(),
                 ],
                 'attributes' => [
                     'required'    => true,

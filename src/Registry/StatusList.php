@@ -18,11 +18,11 @@ use Pi;
 use Pi\Application\Registry\AbstractRegistry;
 
 /*
- * Pi::registry('providerList', 'reserve')->clear();
- * Pi::registry('providerList', 'reserve')->read();
+ * Pi::registry('statusList', 'reserve')->clear();
+ * Pi::registry('statusList', 'reserve')->read();
  */
 
-class ProviderList extends AbstractRegistry
+class StatusList extends AbstractRegistry
 {
     /** @var string Module name */
     protected $module = 'reserve';
@@ -71,6 +71,6 @@ class ProviderList extends AbstractRegistry
      */
     protected function loadDynamic($options = [])
     {
-        return Pi::api('provider', 'reserve')->getList();
+        return Pi::api('status', 'reserve')->getList();
     }
 }

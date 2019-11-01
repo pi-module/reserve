@@ -29,7 +29,7 @@ class ServiceController extends ActionController
         $config = Pi::service('registry')->config->read($module);
 
         // Get list
-        $serviceList = Pi::api('service', 'Reserve')->getList();
+        $serviceList = Pi::api('service', 'reserve')->getList();
 
         // Set view
         $this->view()->setTemplate('service-index');
@@ -77,7 +77,7 @@ class ServiceController extends ActionController
             }
         } else {
             if ($id) {
-                $service = Pi::api('service', 'Reserve')->getService($id);
+                $service = Pi::api('service', 'reserve')->getService($id);
                 $form->setData($service);
             }
         }

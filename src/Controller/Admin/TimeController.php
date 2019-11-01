@@ -44,7 +44,7 @@ class TimeController extends ActionController
 
         // Make list
         foreach ($rowset as $row) {
-            $timeList[$row->id] = Pi::api('time', 'Reserve')->canonizeTime($row);
+            $timeList[$row->id] = Pi::api('time', 'reserve')->canonizeTime($row);
         }
 
         // Get count
@@ -114,7 +114,7 @@ class TimeController extends ActionController
             }
         } else {
             if ($id) {
-                $time = Pi::api('time', 'Reserve')->getTime($id);
+                $time = Pi::api('time', 'reserve')->getTime($id);
                 $form->setData($time);
             }
         }

@@ -33,6 +33,28 @@ class ScheduleFilter extends InputFilter
             );
         }
 
+        // provider_id
+        $this->add(
+            [
+                'name'       => 'provider_id',
+                'required'   => true,
+                'validators' => [
+                    new \Module\Reserve\Validator\SetValue,
+                ],
+            ]
+        );
+
+        // service_id
+        $this->add(
+            [
+                'name'       => 'service_id',
+                'required'   => true,
+                'validators' => [
+                    new \Module\Reserve\Validator\SetValue,
+                ],
+            ]
+        );
+
         // date
         $this->add(
             [

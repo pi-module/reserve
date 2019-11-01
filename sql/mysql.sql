@@ -10,12 +10,13 @@ CREATE TABLE `{schedule}`
     `update_by`         INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_create`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `time_update`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-    `request_time`      DATE                NULL     DEFAULT NULL,
+    `request_time`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+    `request_date`      DATE                NULL     DEFAULT NULL,
     `request_from`      VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `request_to`        VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `amount`            DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `payment_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-    `reserve_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+    `reserve_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 );
 
@@ -31,6 +32,7 @@ CREATE TABLE `{history}`
     `time_update` INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `status`      TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
     `description` MEDIUMTEXT,
+    `image`       VARCHAR(255)        NOT NULL DEFAULT '',
     PRIMARY KEY (`id`)
 );
 
@@ -40,7 +42,9 @@ CREATE TABLE `{provider}`
     `user_id` INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `title`   VARCHAR(255)        NOT NULL DEFAULT '',
     `status`  TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `user_id` (`user_id`),
+    KEY `status` (`status`)
 );
 
 CREATE TABLE `{service}`
@@ -49,7 +53,8 @@ CREATE TABLE `{service}`
     `title`  VARCHAR(255)        NOT NULL DEFAULT '',
     `amount` DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `status` (`status`)
 );
 
 CREATE TABLE `{holiday}`
@@ -57,7 +62,10 @@ CREATE TABLE `{holiday}`
     `id`          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `provider_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
     `date`        DATE             NULL     DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `date_provider` (`date`, `provider_id`),
+    KEY `date` (`date`),
+    KEY `provider_id` (`provider_id`)
 );
 
 CREATE TABLE `{time}`
@@ -67,5 +75,18 @@ CREATE TABLE `{time}`
     `date`        DATE             NULL     DEFAULT NULL,
     `start`       VARCHAR(8)       NOT NULL DEFAULT '00:00',
     `end`         VARCHAR(8)       NOT NULL DEFAULT '00:00',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `date_provider` (`date`, `provider_id`),
+    KEY `date` (`date`),
+    KEY `provider_id` (`provider_id`)
+);
+
+CREATE TABLE `{status}`
+(
+    `id`    INT(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `type`  VARCHAR(32)         NOT NULL DEFAULT '',
+    `title` VARCHAR(32)         NOT NULL DEFAULT '',
+    `value` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`),
+    KEY `type` (`type`)
 );

@@ -15,7 +15,7 @@ return [
     'meta'     => [
         'title'       => _a('Reserve'),
         'description' => _a('Reserve time'),
-        'version'     => '0.0.5',
+        'version'     => '0.0.9',
         'license'     => 'New BSD',
         'logo'        => 'image/logo.png',
         'readme'      => 'docs/readme.txt',

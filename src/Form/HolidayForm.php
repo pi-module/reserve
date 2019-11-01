@@ -41,7 +41,7 @@ class HolidayForm extends BaseForm
                 'type'       => 'select',
                 'options'    => [
                     'label'         => __('Date'),
-                    'value_options' => Pi::api('api', 'Reserve')->dateList(),
+                    'value_options' => Pi::api('api', 'reserve')->dateList(),
                 ],
                 'attributes' => [
                     'required' => true,

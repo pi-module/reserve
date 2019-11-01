@@ -24,6 +24,9 @@ class UpdateController extends ActionController
     {
         // Check user is login or not
         Pi::service('authentication')->requireLogin();
+
+        // Check user is login or not
+        Pi::service('authentication')->requireLogin();
         
         // Get info from url
         $module = $this->params('module');
@@ -56,31 +59,79 @@ class UpdateController extends ActionController
             }
         }
 
+        // Set hour url
+        $hourUrl = Pi::url($this->url('', ['action' => 'hour']));
+
         // Set view
         $this->view()->setTemplate('reserve-update');
         $this->view()->assign('config', $config);
         $this->view()->assign('form', $form);
+        $this->view()->assign('hourUrl', $hourUrl);
     }
 
     public function hourAction()
     {
-        $list = [];
+        // Check user is login or not
+        Pi::service('authentication')->requireLogin();
 
-        $list[] = [
-            'time' => '12:30',
-            'title' => 'sdf sdf sdf sdf sdf sd f'
+        // Check payment and update
+        Pi::api('schedule', 'reserve')->checkPayment();
+
+        // Set default result
+        $result = [
+            'result' => false,
+            'data'   => [],
+            'error'  => [
+                'code'    => 1,
+                'message' => __('Nothing selected'),
+            ],
         ];
 
-        $list[] = [
-            'time' => '13:30',
-            'title' => 'sdf sdf sdf sdf sdf sd f'
-        ];
+        // Get info from url
+        $date     = $this->params('date');
+        $provider = $this->params('provider');
+        $service  = $this->params('service');
 
-        $list[] = [
-            'time' => '14:30',
-            'title' => 'sdf sdf sdf sdf sdf sd f'
-        ];
+        // Set params
+        $params = [];
 
-        return $list;
+        // Set date to params
+        if (!empty($date)) {
+            $params['date'] = $date;
+        } else {
+            $result['error']['message'] = __('Please select date');
+            return $result;
+        }
+
+        // Set provider to params
+        if (!empty($provider)) {
+            $params['provider_id'] = $provider;
+        } else {
+            $result['error']['message'] = __('Please select provider');
+            return $result;
+        }
+
+        // Set service to params
+        if (!empty($service)) {
+            $params['service_id'] = $service;
+        } else {
+            $result['error']['message'] = __('Please select service');
+            return $result;
+        }
+
+        // Get time list
+        $list = Pi::api('api', 'reserve')->timeList($params);
+        if (!empty($list)) {
+            $result = [
+                'result' => true,
+                'data'   => $list,
+                'error'  => [],
+            ];
+
+        } else {
+            $result['error']['message'] = __('No any reserve time available on your selected date');
+        }
+
+        return $result;
     }
 }

@@ -18,9 +18,10 @@ use Pi\Application\Api\AbstractApi;
 use Zend\Db\Sql\Predicate\Expression;
 
 /*
- * Pi::api('time', 'Reserve')->getTime($parameter, $type);
- * Pi::api('time', 'Reserve')->canonizeTime($time);
- * Pi::api('time', 'Reserve')->getList($params);
+ * Pi::api('time', 'reserve')->getTime($parameter, $type);
+ * Pi::api('time', 'reserve')->canonizeTime($time);
+ * Pi::api('time', 'reserve')->getList($params);
+ * Pi::api('time', 'reserve')->getTimeByDate($params);
  */
 
 class Time extends AbstractApi
@@ -49,15 +50,48 @@ class Time extends AbstractApi
 
     public function getList($params = [])
     {
-        $list    = [];
-        $where   = [];
-        $order   = ['date DESC', 'id DESC'];
-        $select  = Pi::model('time', $this->getModule())->select()->where($where)->order($order);
-        $rowSet  = Pi::model('time', $this->getModule())->selectWith($select);
+        // Set info
+        $list  = [];
+        $where = [];
+        $order = ['date DESC', 'id DESC'];
+
+        // Set provider_id
+        if (isset($params['provider_id']) && intval($params['provider_id']) > 0) {
+            $where['provider_id'] = $params['provider_id'];
+        }
+
+        // Set time limit
+        if (isset($params['days']) && intval($params['days']) > 0) {
+            $where['date BETWEEN ?'] = new Expression(sprintf('%s AND %s', $params['start'], $params['end']));
+        }
+
+        $select = Pi::model('time', $this->getModule())->select()->where($where)->order($order);
+        $rowSet = Pi::model('time', $this->getModule())->selectWith($select);
         foreach ($rowSet as $row) {
             $list[$row->id] = $this->canonizeTime($row);
         }
 
         return $list;
+    }
+
+    public function getTimeByDate($params)
+    {
+        // Set where
+        $where = [
+            'date'        => $params['date'],
+            'provider_id' => $params['provider_id'],
+        ];
+
+        // Select
+        $select  = Pi::model('time', $this->getModule())->select()->where($where)->limit(1);
+        $rowTime = Pi::model('time', $this->getModule())->selectWith($select)->current();
+
+        // Set
+        $time = [];
+        if (!empty($rowTime)) {
+            $time = $rowTime->toArray();
+        }
+
+        return $time;
     }
 }

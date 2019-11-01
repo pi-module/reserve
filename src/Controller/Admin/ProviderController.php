@@ -29,7 +29,7 @@ class ProviderController extends ActionController
         $config = Pi::service('registry')->config->read($module);
 
         // Get list
-        $providerList = Pi::api('provider', 'Reserve')->getList();
+        $providerList = Pi::api('provider', 'reserve')->getList();
 
         // Set view
         $this->view()->setTemplate('provider-index');
@@ -77,7 +77,7 @@ class ProviderController extends ActionController
             }
         } else {
             if ($id) {
-                $provider = Pi::api('provider', 'Reserve')->getProvider($id);
+                $provider = Pi::api('provider', 'reserve')->getProvider($id);
                 $form->setData($provider);
             }
         }

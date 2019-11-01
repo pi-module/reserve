@@ -41,7 +41,7 @@ return [
         'time_start'    => [
             'category'    => 'time',
             'title'       => _a('Default start time'),
-            'description' => '',
+            'description' => _a('This time used for all days, for set special time for a any day use time section on module admin aria'),
             'edit'        => 'text',
             'filter'      => 'string',
             'value'       => '16:00',
@@ -49,7 +49,7 @@ return [
         'time_end'      => [
             'category'    => 'time',
             'title'       => _a('Default end time'),
-            'description' => '',
+            'description' => _a('This time used for all days, for set special time for a any day use time section on module admin aria'),
             'edit'        => 'text',
             'filter'      => 'string',
             'value'       => '20:00',
@@ -57,7 +57,7 @@ return [
         'time_step'    => [
             'category'    => 'time',
             'title'       => _a('Reserve time step'),
-            'description' => _a('Put time step by min'),
+            'description' => _a('Put time by min'),
             'edit'        => [
                 'type'    => 'select',
                 'options' => [
@@ -72,6 +72,22 @@ return [
             ],
             'filter'      => 'number_int',
             'value'       => 30,
+        ],
+        'days'    => [
+            'category'    => 'time',
+            'title'       => _a('Number of days on calender'),
+            'description' => '',
+            'edit'        => 'text',
+            'filter'      => 'number_int',
+            'value'       => 15,
+        ],
+        'payment_reserve'    => [
+            'category'    => 'time',
+            'title'       => _a('Allowed time for complete the payment'),
+            'description' => _a('Put time by min'),
+            'edit'        => 'text',
+            'filter'      => 'number_int',
+            'value'       => 60,
         ],
 
         // View
