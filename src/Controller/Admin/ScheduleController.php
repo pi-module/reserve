@@ -49,8 +49,8 @@ class ScheduleController extends ActionController
 
         // Set option
         $option = [
-            'section' => 'admin',
-            'isNew'   => intval($id) > 0 ? false : true,
+            'section'    => 'admin',
+            'isNew'      => intval($id) > 0 ? false : true,
             'statusList' => Pi::registry('statusList', 'reserve')->read(),
         ];
 
@@ -65,7 +65,7 @@ class ScheduleController extends ActionController
                 $values = $form->getData();
 
                 // Set request date
-                $requestDate = sprintf('%s %s', $values['reserve_date'] , $values['reserve_from']);
+                $requestDate = sprintf('%s %s', $values['reserve_date'], $values['reserve_from']);
 
                 // Set reserve_to
                 $time = new DateTime($requestDate);
@@ -76,16 +76,17 @@ class ScheduleController extends ActionController
                 $values['reserve_time'] = strtotime($requestDate);
 
                 // Set amount
-                $serviceList = Pi::registry('serviceList', 'reserve')->read();
-                $values['amount'] = $serviceList[$values['service_id']]['amount'];
+                $serviceList        = Pi::registry('serviceList', 'reserve')->read();
+                $values['amount']   = $serviceList[$values['service_id']]['amount'];
+                $values['currency'] = $serviceList[$values['service_id']]['currency'];
 
                 // Set values
                 if (empty($id)) {
-                    $values['create_by'] = Pi::user()->getId();
+                    $values['create_by']   = Pi::user()->getId();
                     $values['time_create'] = time();
 
                 }
-                $values['update_by'] = Pi::user()->getId();
+                $values['update_by']   = Pi::user()->getId();
                 $values['time_update'] = time();
 
                 // Save values
@@ -103,8 +104,8 @@ class ScheduleController extends ActionController
             }
         } else {
             if ($id) {
-                $provider = Pi::api('provider', 'reserve')->getProvider($id);
-                $form->setData($provider);
+                $schedule = Pi::api('schedule', 'reserve')->getSchedule($id);
+                $form->setData($schedule);
             }
         }
 
@@ -208,7 +209,7 @@ class ScheduleController extends ActionController
                 'result' => true,
                 'data'   => $list,
                 'error'  => [],
-                'p' => $params,
+                'p'      => $params,
             ];
 
         } else {

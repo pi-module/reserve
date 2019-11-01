@@ -49,6 +49,22 @@ class ServiceFilter extends InputFilter
             ]
         );
 
+        // currency
+        $this->add(
+            [
+                'name'       => 'currency',
+                'required'   => true,
+                'filters'    => [
+                    [
+                        'name' => 'StringTrim',
+                    ],
+                ],
+                'validators' => [
+                    new \Module\Reserve\Validator\Amount,
+                ],
+            ]
+        );
+
         // Status
         $this->add(
             [

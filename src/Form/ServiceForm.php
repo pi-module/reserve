@@ -63,6 +63,31 @@ class ServiceForm extends BaseForm
             ]
         );
 
+        // currency
+        $this->add(
+            [
+                'name'       => 'currency',
+                'type'       => 'select',
+                'options'    => [
+                    'label'         => __('Currency'),
+                    'value_options' => [
+                        'EUR' => 'EUR',
+                        'USD' => 'USD',
+                        'CAD' => 'CAD',
+                        'SEK' => 'SEK',
+                        'IRR' => 'IRR',
+                        'TRY' => 'TRY',
+                        'IQD' => 'IQD',
+                        'AED' => 'AED',
+                    ],
+                ],
+                'attributes' => [
+                    'required' => true,
+                    'class'    => 'date-list chosen-select',
+                ],
+            ]
+        );
+
         // Status
         $this->add(
             [

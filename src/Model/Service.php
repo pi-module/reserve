@@ -25,6 +25,7 @@ class Service extends Model
             'id',
             'title',
             'amount',
+            'currency',
             'status',
         ];
 }

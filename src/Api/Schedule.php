@@ -55,7 +55,7 @@ class Schedule extends AbstractApi
         $schedule['provider_title'] = $providerList[$schedule['provider_id']]['title'];
 
         // Set amount_view
-        $schedule['amount_view'] = _currency($schedule['amount']);
+        $schedule['amount_view'] = _currency($schedule['amount'], $schedule['currency']);
 
         // Set date_view
         $schedule['reserve_date_view'] = _date(strtotime($schedule['reserve_date']), ['pattern' => 'yyyy/MM/dd']);

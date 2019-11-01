@@ -42,7 +42,7 @@ class Service extends AbstractApi
         $service = $service->toArray();
 
         // Set amount_view
-        $service['amount_view'] = _currency($service['amount']);
+        $service['amount_view'] = _currency($service['amount'], $service['currency']);
 
         // Set status view
         $service['status_view'] = $service['status'] == 1 ? __('Active') : __('Inactive');

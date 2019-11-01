@@ -37,7 +37,9 @@ class Schedule extends Model
             'reserve_from',
             'reserve_to',
             'amount',
+            'currency',
             'payment_status',
             'reserve_status',
+            'order_id',
         ];
 }

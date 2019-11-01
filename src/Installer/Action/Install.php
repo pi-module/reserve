@@ -71,6 +71,21 @@ class Install extends BasicInstall
                 'title' => __('Awaiting Confirmed'),
                 'value' => 3,
             ],
+            [
+                'type' => 'reserve',
+                'title' => __('Visited - Finish'),
+                'value' => 4,
+            ],
+            [
+                'type' => 'reserve',
+                'title' => __('Visited - Set new schedule'),
+                'value' => 5,
+            ],
+            [
+                'type' => 'reserve',
+                'title' => __('Visited - Need extra service'),
+                'value' => 6,
+            ],
         ];
 
         // Add status list on table

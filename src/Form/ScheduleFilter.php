@@ -38,9 +38,6 @@ class ScheduleFilter extends InputFilter
             [
                 'name'       => 'provider_id',
                 'required'   => true,
-                'validators' => [
-                    new \Module\Reserve\Validator\SetValue,
-                ],
             ]
         );
 
@@ -49,9 +46,6 @@ class ScheduleFilter extends InputFilter
             [
                 'name'       => 'service_id',
                 'required'   => true,
-                'validators' => [
-                    new \Module\Reserve\Validator\SetValue,
-                ],
             ]
         );
 
@@ -61,9 +55,6 @@ class ScheduleFilter extends InputFilter
                 [
                     'name'       => 'payment_status',
                     'required'   => true,
-                    'validators' => [
-                        new \Module\Reserve\Validator\SetValue,
-                    ],
                 ]
             );
         }
@@ -74,9 +65,6 @@ class ScheduleFilter extends InputFilter
                 [
                     'name'       => 'reserve_status',
                     'required'   => true,
-                    'validators' => [
-                        new \Module\Reserve\Validator\SetValue,
-                    ],
                 ]
             );
         }
