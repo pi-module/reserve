@@ -98,26 +98,31 @@ angular.module('reserve')
 
             // Search by time
             $(function () {
+                var d = new Date();
+                var year = d.getFullYear();
+                var month = d.getMonth();
+                var day = d.getDate();
+
                 var dateFormat = 'yy-mm-dd',
                     from = $('#dateFrom')
                         .datepicker({
                             dateFormat: 'yy-mm-dd',
-                            defaultDate: '-4w',
+                            defaultDate: '-2w',
                             changeMonth: true,
                             numberOfMonths: 2,
-                            maxDate: new Date,
-                            minDate: new Date(2017, 6, 1)
+                            maxDate: new Date(year + 1, month, day),
+                            minDate: new Date(year - 1, month, day)
                         })
                         .on('change', function () {
                             to.datepicker('option', 'minDate', getDate(this))
                         }),
                     to = $('#dateTo').datepicker({
                         dateFormat: 'yy-mm-dd',
-                        defaultDate: '+1w',
+                        defaultDate: '+2w',
                         changeMonth: true,
                         numberOfMonths: 2,
-                        maxDate: new Date,
-                        minDate: new Date(2017, 6, 1)
+                        maxDate: new Date(year + 1, month, day),
+                        minDate: new Date(year - 1, month, day)
                     })
                         .on('change', function () {
                             from.datepicker('option', 'maxDate', getDate(this))

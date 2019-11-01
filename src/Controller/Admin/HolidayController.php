@@ -31,12 +31,24 @@ class HolidayController extends ActionController
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
+        // Set provider list
+        $providerList = Pi::registry('providerList', 'reserve')->read();
+
         // Set info
         $holidayList = [];
-        $where       = [];
-        $order       = ['date DESC', 'id DESC'];
-        $limit       = intval($config['admin_perpage']);
-        $offset      = (int)($page - 1) * $limit;
+
+        $where  = [
+            'date BETWEEN ?' => new Expression(
+                sprintf(
+                    "'%s' AND '%s'",
+                    date("Y-m-d"),
+                    date('Y-m-d', strtotime(sprintf('+%s days', $config['days'])))
+                )
+            ),
+        ];
+        $order  = ['date DESC', 'id DESC'];
+        $limit  = intval($config['admin_perpage']);
+        $offset = (int)($page - 1) * $limit;
 
         // Get info
         $select = $this->getModel('holiday')->select()->where($where)->order($order)->offset($offset)->limit($limit);
@@ -44,7 +56,7 @@ class HolidayController extends ActionController
 
         // Make list
         foreach ($rowset as $row) {
-            $holidayList[$row->id] = Pi::api('holiday', 'reserve')->canonizeHoliday($row);
+            $holidayList[$row->id] = Pi::api('holiday', 'reserve')->canonizeHoliday($row, $providerList);
         }
 
         // Get count
@@ -81,7 +93,6 @@ class HolidayController extends ActionController
     {
         // Get info from url
         $module = $this->params('module');
-        $id     = $this->params('id');
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
@@ -111,11 +122,6 @@ class HolidayController extends ActionController
                 // Jump
                 $message = __('Holiday data saved successfully.');
                 $this->jump(['action' => 'index'], $message, 'success');
-            }
-        } else {
-            if ($id) {
-                $holiday = Pi::api('holiday', 'reserve')->getHoliday($id);
-                $form->setData($holiday);
             }
         }
 

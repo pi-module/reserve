@@ -36,8 +36,8 @@ class Api extends AbstractApi
         $list = ['' => ''];
 
         // Set times
-        $params['start'] = isset($params['start']) ? $params['start'] : date("Y-m-d");
-        $params['end']   = isset($params['end']) ? $params['end'] : date('Y-m-d', strtotime(sprintf('+%s days', $config['days'])));
+        $params['date_start'] = isset($params['date_start']) ? $params['date_start'] : date("Y-m-d");
+        $params['date_end']   = isset($params['date_end']) ? $params['date_end'] : date('Y-m-d', strtotime(sprintf('+%s days', $config['days'])));
 
         // Get holiday
         $holidayList = Pi::api('holiday', 'reserve')->getList($params);
@@ -45,9 +45,9 @@ class Api extends AbstractApi
 
         // Make time
         $period = new DatePeriod(
-            new DateTime($params['start']),
+            new DateTime($params['date_start']),
             new DateInterval('P1D'),
-            new DateTime($params['end'])
+            new DateTime($params['date_end'])
         );
 
         // Make time list
@@ -55,6 +55,18 @@ class Api extends AbstractApi
             $date = $value->format('Y-m-d');
             if (!in_array($date, $holidayList)) {
                 $list[$date] = _date(strtotime($date), ['pattern' => 'yyyy/MM/dd']);
+            }
+        }
+
+        // include time
+        if (isset($params['include_time']) && $params['include_time']) {
+            $timeList = Pi::api('time', 'reserve')->getList($params);
+            if (!empty($timeList)) {
+                foreach ($timeList as $timeSingle) {
+                    if (isset($list[$timeSingle['date']])) {
+                        unset($list[$timeSingle['date']]);
+                    }
+                }
             }
         }
 
@@ -83,22 +95,22 @@ class Api extends AbstractApi
 
         // Set start
         if (!empty($timeList)) {
-            $params['start'] = $timeList['start'];
-            $params['end']   = $timeList['end'];
+            $params['time_start'] = $timeList['start'];
+            $params['time_end']   = $timeList['end'];
         } else {
-            $params['start'] = isset($params['start']) ? $params['start'] : $config['time_start'];
-            $params['end']   = isset($params['end']) ? $params['end'] : $config['time_end'];
+            $params['time_start'] = isset($params['time_start']) ? $params['time_start'] : $config['time_start'];
+            $params['time_end']   = isset($params['time_end']) ? $params['time_end'] : $config['time_end'];
         }
 
         // Set start
-        $params['start'] = strtotime($params['start']) - strtotime('TODAY');
-        $params['end']   = strtotime($params['end']) - strtotime('TODAY');
+        $params['time_start'] = strtotime($params['time_start']) - strtotime('TODAY');
+        $params['time_end']   = strtotime($params['time_end']) - strtotime('TODAY');
 
         // Set step
         $params['step'] = (isset($params['step']) ? $params['step'] : $config['time_step']) * 60;
 
         // Make list
-        foreach (range($params['start'], $params['end'], $params['step']) as $increment) {
+        foreach (range($params['time_start'], $params['time_end'], $params['step']) as $increment) {
             $increment = gmdate('H:i', $increment);
             list($hour, $minutes) = explode(':', $increment);
             $date                     = new DateTime($hour . ':' . $minutes);
@@ -108,8 +120,8 @@ class Api extends AbstractApi
         // Remove reserved times
         if (!empty($scheduleList)) {
             foreach ($scheduleList as $scheduleSingle) {
-                if (isset($list[$scheduleSingle['request_from']])) {
-                    unset($list[$scheduleSingle['request_from']]);
+                if (isset($list[$scheduleSingle['reserve_from']])) {
+                    unset($list[$scheduleSingle['reserve_from']]);
                 }
             }
         }

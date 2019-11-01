@@ -33,26 +33,56 @@ class Schedule extends AbstractApi
         return $this->canonizeSchedule($schedule);
     }
 
-    public function canonizeSchedule($schedule)
+    public function canonizeSchedule($schedule, $providerList = [], $statusList = [])
     {
         // Check
         if (empty($schedule)) {
             return '';
         }
 
+        // Set provider list
+        $providerList = empty($providerList) ? Pi::registry('providerList', 'reserve')->read() : $providerList;
+
+        // Set status list
+        $statusList = empty($statusList) ? Pi::registry('statusList', 'reserve')->read() : $statusList;
+
         // object to array
         if (is_object($schedule)) {
             $schedule = $schedule->toArray();
         }
 
+        // Set provider_title
+        $schedule['provider_title'] = $providerList[$schedule['provider_id']]['title'];
+
         // Set amount_view
         $schedule['amount_view'] = _currency($schedule['amount']);
+
+        // Set date_view
+        $schedule['reserve_date_view'] = _date(strtotime($schedule['reserve_date']), ['pattern' => 'yyyy/MM/dd']);
+
+        // payment_status_view
+        $schedule['payment_status_view'] = $statusList['payment'][$schedule['payment_status']]['title'];
+
+        // reserve_status_view
+        $schedule['reserve_status_view'] = $statusList['reserve'][$schedule['reserve_status']]['title'];
+
+        // Set urls
+        $schedule['urlEdit'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
 
         return $schedule;
     }
 
     public function getList($params = [])
     {
+        // Set service list
+        $serviceList = Pi::registry('serviceList', 'reserve')->read();
+
+        // Set provider list
+        $providerList = Pi::registry('providerList', 'reserve')->read();
+
+        // Set status list
+        $statusList = Pi::registry('statusList', 'reserve')->read();
+
         // Set model
         $modelSchedule = Pi::model('schedule', $this->getModule());
         $modelProvider = Pi::model('provider', $this->getModule());
@@ -63,7 +93,7 @@ class Schedule extends AbstractApi
         // Set info
         $limit  = isset($params['limit']) ? $params['limit'] : 25;
         $offset = (int)($params['page'] - 1) * $limit;
-        $order  = ['schedule.request_from  desc', 'schedule.id desc'];
+        $order  = ['schedule.reserve_from  desc', 'schedule.id desc'];
         $where  = ['account.active' => 1];
         if (isset($params['user_id']) && !empty($params['user_id'])) {
             $where['schedule.user_id'] = $params['user_id'];
@@ -74,14 +104,20 @@ class Schedule extends AbstractApi
         if (isset($params['service_id']) && !empty($params['service_id'])) {
             $where['schedule.service_id'] = $params['service_id'];
         }
-        if (isset($params['request_from ']) && !empty($params['request_from '])) {
-            $where['schedule.request_from '] = $params['request_from '];
+        if (isset($params['reserve_from ']) && !empty($params['reserve_from '])) {
+            $where['schedule.reserve_from '] = $params['reserve_from '];
         }
         if (isset($params['payment_status']) && !empty($params['payment_status'])) {
             $where['schedule.payment_status'] = $params['payment_status'];
         }
         if (isset($params['reserve_status']) && !empty($params['reserve_status'])) {
             $where['schedule.reserve_status'] = $params['reserve_status'];
+        }
+        if (isset($params['dateFrom']) && !empty($params['dateFrom'])) {
+            $where['schedule.reserve_date >= ?'] = $params['dateFrom'];
+        }
+        if (isset($params['dateTo']) && !empty($params['dateTo'])) {
+            $where['schedule.reserve_date <= ?'] = $params['dateTo'];
         }
         if (isset($params['name']) && !empty($params['name'])) {
             $where['account.name like ?'] = '%' . $params['name'] . '%';
@@ -131,7 +167,7 @@ class Schedule extends AbstractApi
         $list = [];
         foreach ($rowSet as $row) {
             // Set to list
-            $list[] = $this->canonizeSchedule($row);
+            $list[] = $this->canonizeSchedule($row, $providerList, $statusList);
         }
 
         // Set count
@@ -179,7 +215,11 @@ class Schedule extends AbstractApi
                 'title' => sprintf(__('Your request have %s result !'), $count['count']),
             ],
             'condition' => [
-                'title' => __('List of schedules'),
+                'title'        => __('List of schedules'),
+                'serviceList'  => $serviceList,
+                'providerList' => $providerList,
+                'statusList'   => $statusList,
+
             ],
         ];
 
@@ -191,7 +231,7 @@ class Schedule extends AbstractApi
         // Set info
         $list  = [];
         $where = [
-            'request_date'   => $params['date'],
+            'reserve_date'   => $params['date'],
             'reserve_status' => [1, 2, 3],
         ];
         if (isset($params['service_id']) && intval($params['service_id']) > 0) {
@@ -224,7 +264,7 @@ class Schedule extends AbstractApi
             [
                 'reserve_status'   => 2,
                 'payment_status'   => 0,
-                'request_time < ?' => (time() - (60 * $config['payment_reserve'])),
+                'reserve_time < ?' => (time() - (60 * $config['payment_reserve'])),
             ]
         );
     }

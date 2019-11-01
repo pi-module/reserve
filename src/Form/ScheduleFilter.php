@@ -55,10 +55,36 @@ class ScheduleFilter extends InputFilter
             ]
         );
 
-        // date
+        // payment_status
+        if ($option['isNew'] && $option['section'] == 'admin') {
+            $this->add(
+                [
+                    'name'       => 'payment_status',
+                    'required'   => true,
+                    'validators' => [
+                        new \Module\Reserve\Validator\SetValue,
+                    ],
+                ]
+            );
+        }
+
+        // reserve_status
+        if ($option['isNew'] && $option['section'] == 'admin') {
+            $this->add(
+                [
+                    'name'       => 'reserve_status',
+                    'required'   => true,
+                    'validators' => [
+                        new \Module\Reserve\Validator\SetValue,
+                    ],
+                ]
+            );
+        }
+
+        // reserve_date
         $this->add(
             [
-                'name'     => 'date',
+                'name'     => 'reserve_date',
                 'required' => true,
                 'filters'  => [
                     [
@@ -71,10 +97,10 @@ class ScheduleFilter extends InputFilter
             ]
         );
 
-        // hour
+        // reserve_from
         $this->add(
             [
-                'name'     => 'hour',
+                'name'     => 'reserve_from',
                 'required' => true,
                 'filters'  => [
                     [

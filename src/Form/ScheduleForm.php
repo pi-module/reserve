@@ -81,26 +81,78 @@ class ScheduleForm extends BaseForm
             ]
         );
 
-        // date
+        // payment_status
+        if ($this->option['isNew'] && $this->option['section'] == 'admin') {
+            // Make list
+            $paymentList = [];
+            foreach ($this->option['statusList']['payment'] as $paymentSingle) {
+                $paymentList[$paymentSingle['value']] = $paymentSingle['title'];
+            }
+
+            // Make form element
+            $this->add(
+                [
+                    'name'       => 'payment_status',
+                    'type'       => 'select',
+                    'options'    => [
+                        'label'         => __('Payment status'),
+                        'value_options' => $paymentList,
+                    ],
+                    'attributes' => [
+                        'required' => true,
+                        'class'    => 'chosen-select',
+                        'value'    => 1,
+                    ],
+                ]
+            );
+        }
+
+        // reserve_status
+        if ($this->option['isNew'] && $this->option['section'] == 'admin') {
+            // Make list
+            $reserveList = [];
+            foreach ($this->option['statusList']['reserve'] as $reserveSingle) {
+                $reserveList[$reserveSingle['value']] = $reserveSingle['title'];
+            }
+
+            // Make form element
+            $this->add(
+                [
+                    'name'       => 'reserve_status',
+                    'type'       => 'select',
+                    'options'    => [
+                        'label'         => __('Reserve status'),
+                        'value_options' => $reserveList,
+                    ],
+                    'attributes' => [
+                        'required' => true,
+                        'class'    => 'chosen-select',
+                        'value'    => 1,
+                    ],
+                ]
+            );
+        }
+
+        // reserve_date
         $this->add(
             [
-                'name'    => 'date',
-                'type'    => 'select',
-                'options' => [
+                'name'       => 'reserve_date',
+                'type'       => 'select',
+                'options'    => [
                     'label'         => __('Date'),
                     'value_options' => Pi::api('api', 'reserve')->dateList(),
                 ],
                 'attributes' => [
-                    'required'    => true,
-                    'class' => 'date-list chosen-select',
+                    'required' => true,
+                    'class'    => 'date-list chosen-select',
                 ],
             ]
         );
 
-        // hour
+        // reserve_from
         $this->add(
             [
-                'name'       => 'hour',
+                'name'       => 'reserve_from',
                 'type'       => 'description',
                 'options'    => [
                     'label' => __('Select hour'),

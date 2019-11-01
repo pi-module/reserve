@@ -32,7 +32,7 @@ class Status extends AbstractApi
         // Set list
         $list = [];
         foreach ($rowSet as $row) {
-            $list[$row->type][$row->id] = $row->toArray();
+            $list[$row->type][$row->value] = $row->toArray();
         }
 
         return $list;

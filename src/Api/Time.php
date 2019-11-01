@@ -62,7 +62,7 @@ class Time extends AbstractApi
 
         // Set time limit
         if (isset($params['days']) && intval($params['days']) > 0) {
-            $where['date BETWEEN ?'] = new Expression(sprintf('%s AND %s', $params['start'], $params['end']));
+            $where['date BETWEEN ?'] = new Expression(sprintf("'%s' AND '%s'", $params['date_start'], $params['date_end']));
         }
 
         $select = Pi::model('time', $this->getModule())->select()->where($where)->order($order);

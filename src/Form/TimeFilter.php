@@ -21,20 +21,22 @@ class TimeFilter extends InputFilter
     public function __construct($option = [])
     {
         // date
-        $this->add(
-            [
-                'name'     => 'date',
-                'required' => true,
-                'filters'  => [
-                    [
-                        'name' => 'StringTrim',
+        if ($option['isNew']) {
+            $this->add(
+                [
+                    'name'       => 'date',
+                    'required'   => true,
+                    'filters'    => [
+                        [
+                            'name' => 'StringTrim',
+                        ],
                     ],
-                ],
-                'validators' => [
-                    new \Module\Reserve\Validator\SetValue,
-                ],
-            ]
-        );
+                    'validators' => [
+                        new \Module\Reserve\Validator\SetValue,
+                    ],
+                ]
+            );
+        }
 
         // start
         $this->add(

@@ -25,6 +25,7 @@ class History extends Model
             'id',
             'user_id',
             'provider_id',
+            'service_id',
             'schedule_id',
             'create_by',
             'update_by',

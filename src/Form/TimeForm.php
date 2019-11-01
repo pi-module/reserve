@@ -35,20 +35,22 @@ class TimeForm extends BaseForm
     public function init()
     {
         // date
-        $this->add(
-            [
-                'name'    => 'date',
-                'type'    => 'select',
-                'options' => [
-                    'label'         => __('Date'),
-                    'value_options' => Pi::api('api', 'reserve')->dateList(),
-                ],
-                'attributes' => [
-                    'required'    => true,
-                    'class' => 'date-list',
-                ],
-            ]
-        );
+        if ($this->option['isNew']) {
+            $this->add(
+                [
+                    'name'       => 'date',
+                    'type'       => 'select',
+                    'options'    => [
+                        'label'         => __('Date'),
+                        'value_options' => Pi::api('api', 'reserve')->dateList(['include_time' => true]),
+                    ],
+                    'attributes' => [
+                        'required' => true,
+                        'class'    => 'date-list',
+                    ],
+                ]
+            );
+        }
 
         // start
         $this->add(

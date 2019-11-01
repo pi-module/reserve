@@ -31,18 +31,24 @@ class Holiday extends AbstractApi
         return $this->canonizeHoliday($holiday);
     }
 
-    public function canonizeHoliday($holiday)
+    public function canonizeHoliday($holiday, $providerList = [])
     {
         // Check
         if (empty($holiday)) {
             return '';
         }
 
+        // Set provider list
+        $providerList = empty($providerList) ? Pi::registry('providerList', 'reserve')->read() : $providerList;
+
         // object to array
         $holiday = $holiday->toArray();
 
         // Set date_view
         $holiday['date_view'] = _date(strtotime($holiday['date']), ['pattern' => 'yyyy/MM/dd']);
+
+        // Set provider_title
+        $holiday['provider_title'] = $providerList[$holiday['provider_id']]['title'];
 
         return $holiday;
     }
@@ -61,7 +67,7 @@ class Holiday extends AbstractApi
 
         // Set time limit
         if (isset($params['days']) && intval($params['days']) > 0) {
-            $where['date BETWEEN ?'] = new Expression(sprintf('%s AND %s', $params['start'], $params['end']));
+            $where['date BETWEEN ?'] = new Expression(sprintf("'%s' AND '%s'", $params['date_start'], $params['date_end']));
         }
 
         // Select

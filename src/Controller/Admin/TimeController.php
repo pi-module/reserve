@@ -87,7 +87,9 @@ class TimeController extends ActionController
         $config = Pi::service('registry')->config->read($module);
 
         // Set option
-        $option = [];
+        $option = [
+            'isNew'   => intval($id) > 0 ? false : true,
+        ];
 
         // Set form
         $form = new TimeForm('time', $option);

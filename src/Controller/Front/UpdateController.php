@@ -93,7 +93,7 @@ class UpdateController extends ActionController
         $service  = $this->params('service');
 
         // Set params
-        $params = [];
+        $params = ['type' => 'check'];
 
         // Set date to params
         if (!empty($date)) {
@@ -126,6 +126,7 @@ class UpdateController extends ActionController
                 'result' => true,
                 'data'   => $list,
                 'error'  => [],
+                'p' => $params,
             ];
 
         } else {

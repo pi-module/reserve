@@ -17,6 +17,8 @@ use Pi;
 use Pi\Mvc\Controller\ActionController;
 use Module\Reserve\Form\ScheduleFilter;
 use Module\Reserve\Form\ScheduleForm;
+use DateTime;
+use DateInterval;
 
 class ScheduleController extends ActionController
 {
@@ -49,6 +51,7 @@ class ScheduleController extends ActionController
         $option = [
             'section' => 'admin',
             'isNew'   => intval($id) > 0 ? false : true,
+            'statusList' => Pi::registry('statusList', 'reserve')->read(),
         ];
 
         // Set form
@@ -61,12 +64,42 @@ class ScheduleController extends ActionController
             if ($form->isValid()) {
                 $values = $form->getData();
 
-                d($values);
+                // Set request date
+                $requestDate = sprintf('%s %s', $values['reserve_date'] , $values['reserve_from']);
 
+                // Set reserve_to
+                $time = new DateTime($requestDate);
+                $time->add(new DateInterval(sprintf('PT%sM', $config['time_step'])));
+                $values['reserve_to'] = $time->format('H:i');
+
+                // Set reserve_time
+                $values['reserve_time'] = strtotime($requestDate);
+
+                // Set amount
+                $serviceList = Pi::registry('serviceList', 'reserve')->read();
+                $values['amount'] = $serviceList[$values['service_id']]['amount'];
+
+                // Set values
+                if (empty($id)) {
+                    $values['create_by'] = Pi::user()->getId();
+                    $values['time_create'] = time();
+
+                }
+                $values['update_by'] = Pi::user()->getId();
+                $values['time_update'] = time();
+
+                // Save values
+                if (!empty($id)) {
+                    $row = $this->getModel('schedule')->find($id);
+                } else {
+                    $row = $this->getModel('schedule')->createRow();
+                }
+                $row->assign($values);
+                $row->save();
 
                 // Jump
-                //$message = __('Schedule data saved successfully.');
-                //$this->jump(['action' => 'index'], $message, 'success');
+                $message = __('Schedule data saved successfully.');
+                $this->jump(['action' => 'index'], $message, 'success');
             }
         } else {
             if ($id) {
