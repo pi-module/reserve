@@ -67,7 +67,8 @@ class Schedule extends AbstractApi
         $schedule['reserve_status_view'] = $statusList['reserve'][$schedule['reserve_status']]['title'];
 
         // Set urls
-        $schedule['urlEdit'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
+        $schedule['urlEdit']   = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
+        $schedule['urlStatus'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id']]));
 
         return $schedule;
     }

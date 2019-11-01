@@ -150,67 +150,28 @@ angular.module('reserve')
                     },
                     init: function () {
                         _.bindAll(this)
-                        this.$('.schedule-edit').click(this.reserveAction)
-                        this.$('.schedule-confirm').click(this.confirmAction)
-                        this.$('.schedule-reject').click(this.rejectAction)
+                        this.$('.schedule-status').click(this.statusAction)
                     },
-                    editAction: function (e) {
+                    statusAction: function (e) {
                         var p = $(e.target).parents('tr'),
                             self = this
-                        $.get(p.attr('data-edit')).done(function (res) {
+                        $.get(p.attr('data-status')).done(function (res) {
                             self.modal.html(res).modal('show')
                             formModule.success = function (res) {
                                 self.modal.html(res).modal('hide')
-                                systemMessage.succ(res.message)
-                                $route.reload()
+                                systemMessage.succ(config.t.STATUS_SUCCESS)
+                                //$route.reload()
+                                $('.payment-status-' + res.data.id).html(res.data.payment_status_view);
+                                $('.reserve-status-' + res.data.id).html(res.data.reserve_status_view);
+
                             }
                             formModule.fail = function () {
                                 self.modal.modal('hide')
-                                systemMessage.fail(config.t.RESERVE_ERROR)
+                                systemMessage.fail(config.t.STATUS_ERROR)
                             }
                         })
                     },
-                    confirmAction: function (e) {
-                        var p = $(e.target).parents('tr'),
-                            self = this
-                        systemMessage.wait(config.t.CONFIRM_AT_PROCESS)
-                        let requestId = p.attr('data-id')
-                        if (confirm(config.t.ARE_YOU_SURE_CONFIRM)) {
-                            $.getJSON(p.attr('data-confirm')).done(function (result) {
-                                if (result.status == 1) {
-                                    $('#' + requestId).slideUp(700, function () {
-                                        self.remove()
-                                    })
-                                    systemMessage.succ(result.message)
-                                    //$location.search('autoReload', 'true')
-                                    $route.reload()
-                                } else {
-                                    systemMessage.fail(result.message)
-                                }
-                            })
-                        }
 
-                    },
-                    rejectAction: function (e) {
-                        var p = $(e.target).parents('tr'),
-                            self = this
-                        systemMessage.wait(config.t.REJECT_AT_PROCESS)
-                        let requestId = p.attr('data-id')
-                        if (confirm(config.t.ARE_YOU_SURE_REJECT)) {
-                            $.getJSON(p.attr('data-reject')).done(function (result) {
-                                if (result.status == 1) {
-                                    $('#' + requestId).slideUp(700, function () {
-                                        self.remove()
-                                    })
-                                    $location.search('autoReload', 'true')
-                                    $route.reload()
-                                    systemMessage.succ(result.message)
-                                } else {
-                                    systemMessage.fail(result.message)
-                                }
-                            })
-                        }
-                    },
                 }
                 page.init()
             })

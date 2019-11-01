@@ -17,6 +17,8 @@ use Pi;
 use Pi\Mvc\Controller\ActionController;
 use Module\Reserve\Form\ScheduleFilter;
 use Module\Reserve\Form\ScheduleForm;
+use Module\Reserve\Form\StatusFilter;
+use Module\Reserve\Form\StatusForm;
 use DateTime;
 use DateInterval;
 
@@ -47,11 +49,27 @@ class ScheduleController extends ActionController
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
+        // Get status list
+        $statusList = Pi::registry('statusList', 'reserve')->read();
+
+        // Make payment list
+        $paymentList = [];
+        foreach ($statusList['payment'] as $paymentSingle) {
+            $paymentList[$paymentSingle['value']] = $paymentSingle['title'];
+        }
+
+        // Make reserve list
+        $reserveList = [];
+        foreach ($statusList['reserve'] as $reserveSingle) {
+            $reserveList[$reserveSingle['value']] = $reserveSingle['title'];
+        }
+
         // Set option
         $option = [
-            'section'    => 'admin',
-            'isNew'      => intval($id) > 0 ? false : true,
-            'statusList' => Pi::registry('statusList', 'reserve')->read(),
+            'section'     => 'admin',
+            'isNew'       => intval($id) > 0 ? false : true,
+            'paymentList' => $paymentList,
+            'reserveList' => $reserveList,
         ];
 
         // Set form
@@ -217,5 +235,89 @@ class ScheduleController extends ActionController
         }
 
         return $result;
+    }
+
+    public function statusAction()
+    {
+        // Get id
+        $id = $this->params('id');
+
+        // Get schedule
+        $schedule = Pi::api('schedule', 'reserve')->getSchedule($id);
+
+        // Get status list
+        $statusList = Pi::registry('statusList', 'reserve')->read();
+
+        // Make payment list
+        $paymentList = [];
+        foreach ($statusList['payment'] as $paymentSingle) {
+            $paymentList[$paymentSingle['value']] = $paymentSingle['title'];
+        }
+
+        // Make reserve list
+        $reserveList = [];
+        foreach ($statusList['reserve'] as $reserveSingle) {
+            $reserveList[$reserveSingle['value']] = $reserveSingle['title'];
+        }
+
+        // Set form option
+        $option = [
+            'paymentList' => $paymentList,
+            'reserveList' => $reserveList,
+        ];
+
+        // Set form action url
+        $formAction = Pi::url($this->url('', ['action' => 'status', 'id' => $schedule['id']]));
+
+        // Set form
+        $form = new StatusForm('status', $option);
+        $form->setAttribute('enctype', 'multipart/form-data');
+        $form->setAttribute('action', $formAction);
+        if ($this->request->isPost()) {
+            $data = $this->request->getPost();
+            $form->setInputFilter(new StatusFilter($option));
+            $form->setData($data);
+            if ($form->isValid()) {
+                $values = $form->getData();
+
+                // Set value
+                $values['update_by']   = Pi::user()->getId();
+                $values['time_update'] = time();
+
+                // Save values
+                $row = $this->getModel('schedule')->find($id);
+                $row->assign($values);
+                $row->save();
+
+                // Canonize schedule
+                $schedule = Pi::api('schedule', 'reserve')->canonizeSchedule($row);
+
+                //
+                return [
+                    'status' => 1,
+                    'result' => true,
+                    'data'   => $schedule,
+                    'error'  => [],
+                ];
+            } else {
+                return [
+                    'status' => 0,
+                    'result' => false,
+                    'data'   => [],
+                    'error'  => [
+                        'code'    => 1,
+                        'message' => __('Nothing selected'),
+                    ],
+                ];
+            }
+        } else {
+            // Set form data
+            $form->setData($schedule);
+        }
+
+        // Set view
+        $this->view()->setTemplate('system:component/form-popup');
+        $this->view()->assign('title', __('Update schedule status'));
+        $this->view()->assign('form', $form);
     }
 }

@@ -83,20 +83,13 @@ class ScheduleForm extends BaseForm
 
         // payment_status
         if ($this->option['isNew'] && $this->option['section'] == 'admin') {
-            // Make list
-            $paymentList = [];
-            foreach ($this->option['statusList']['payment'] as $paymentSingle) {
-                $paymentList[$paymentSingle['value']] = $paymentSingle['title'];
-            }
-
-            // Make form element
             $this->add(
                 [
                     'name'       => 'payment_status',
                     'type'       => 'select',
                     'options'    => [
                         'label'         => __('Payment status'),
-                        'value_options' => $paymentList,
+                        'value_options' => $this->option['paymentList'],
                     ],
                     'attributes' => [
                         'required' => true,
@@ -109,20 +102,13 @@ class ScheduleForm extends BaseForm
 
         // reserve_status
         if ($this->option['isNew'] && $this->option['section'] == 'admin') {
-            // Make list
-            $reserveList = [];
-            foreach ($this->option['statusList']['reserve'] as $reserveSingle) {
-                $reserveList[$reserveSingle['value']] = $reserveSingle['title'];
-            }
-
-            // Make form element
             $this->add(
                 [
                     'name'       => 'reserve_status',
                     'type'       => 'select',
                     'options'    => [
                         'label'         => __('Reserve status'),
-                        'value_options' => $reserveList,
+                        'value_options' => $this->option['reserveList'],
                     ],
                     'attributes' => [
                         'required' => true,

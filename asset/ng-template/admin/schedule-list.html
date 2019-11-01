@@ -146,10 +146,7 @@
                     </tr>
                     <tr ng-repeat="item in list"
                         id="schedule-{{item.id}}"
-                        class="{{item.status_class_table}}"
-                        data-edit="{{item.urlReserve}}"
-                        data-reject="{{item.urlReject}}"
-                        data-confirm="{{item.urlConfirm}}"
+                        data-status="{{item.urlStatus}}"
                         data-id="schedule-{{item.id}}"
                     >
                         <td>{{item.id}}</td>
@@ -171,14 +168,17 @@
                         <td>{{item.provider_title}}</td>
                         <td>
                             <ul class="list-unstyled">
-                                <li>{{'PAYMENT' | translate}} : <strong>{{item.payment_status_view}}</strong></li>
-                                <li>{{'RESERVE' | translate}} : <strong>{{item.reserve_status_view}}</strong></li>
+                                <li>{{'PAYMENT' | translate}} : <strong class="payment-status-{{item.id}}">{{item.payment_status_view}}</strong></li>
+                                <li>{{'RESERVE' | translate}} : <strong class="reserve-status-{{item.id}}">{{item.reserve_status_view}}</strong></li>
                             </ul>
                         </td>
                         <td>
                             <a class="btn btn-primary btn-sm" href="{{item.urlEdit}}">
                                 {{'EDIT' | translate}}
                             </a>
+                            <button class="schedule-status btn btn-warning btn-sm">
+                                {{'UPDATE_STATUS' | translate}}
+                            </button>
                         </td>
                     </tr>
                 </table>

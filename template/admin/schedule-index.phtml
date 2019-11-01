@@ -14,7 +14,14 @@ $this->angular(
         'i18n',
     ]
 );
-$this->css($this->assetModule('css/admin.css'));
+$this->backbone();
+$this->js([
+    $this->assetModule('script/system-msg.js', 'system')
+]);
+$this->css([
+    $this->assetModule('css/admin.css'),
+    $this->assetModule('script/system-ui.css', 'system'),
+]);
 ?>
 <div class="row clearfix pi-item-angular"></div>
 <script>
@@ -55,6 +62,9 @@ $this->css($this->assetModule('css/admin.css'));
                 EDIT: '<?php _e('Edit'); ?>',
                 PAYMENT: '<?php _e('Payment'); ?>',
                 RESERVE: '<?php _e('Reserve'); ?>',
+                UPDATE_STATUS: '<?php _e('Update status'); ?>',
+                STATUS_SUCCESS: '<?php _e('Schedule update successfully'); ?>',
+                STATUS_ERROR: '<?php _e('Error to update schedule'); ?>',
             },
         })
 </script>
