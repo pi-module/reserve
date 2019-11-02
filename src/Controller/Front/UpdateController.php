@@ -105,10 +105,6 @@ class UpdateController extends ActionController
 
                 // Redirect to checkout page
                 Pi::service('url')->redirect($url);
-
-                // Jump
-                //$message = __('Schedule data saved successfully.');
-                //$this->jump(['controller' => 'index', 'action' => 'index'], $message, 'success');
             }
         }
 
