@@ -29,7 +29,7 @@ class UpdateController extends ActionController
 
         // Check user is login or not
         Pi::service('authentication')->requireLogin();
-        
+
         // Get info from url
         $module = $this->params('module');
 
@@ -53,8 +53,8 @@ class UpdateController extends ActionController
 
         // Set option
         $option = [
-            'section' => 'front',
-            'isNew'   => true,
+            'section'     => 'front',
+            'isNew'       => true,
             'paymentList' => $paymentList,
             'reserveList' => $reserveList,
         ];
@@ -86,7 +86,7 @@ class UpdateController extends ActionController
                 $values['currency'] = $serviceList[$values['service_id']]['currency'];
 
                 // Set values
-                $values['user_id']   = Pi::user()->getId();
+                $values['user_id']     = Pi::user()->getId();
                 $values['update_by']   = Pi::user()->getId();
                 $values['create_by']   = Pi::user()->getId();
                 $values['time_create'] = time();

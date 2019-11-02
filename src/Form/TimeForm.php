@@ -55,15 +55,15 @@ class TimeForm extends BaseForm
         // start
         $this->add(
             [
-                'name'    => 'start',
-                'type'    => 'select',
-                'options' => [
+                'name'       => 'start',
+                'type'       => 'select',
+                'options'    => [
                     'label'         => __('Time start'),
                     'value_options' => Pi::api('api', 'reserve')->timeList(),
                 ],
                 'attributes' => [
-                    'required'    => true,
-                    'class' => 'date-list',
+                    'required' => true,
+                    'class'    => 'date-list',
                 ],
             ]
         );
@@ -71,15 +71,15 @@ class TimeForm extends BaseForm
         // end
         $this->add(
             [
-                'name'    => 'end',
-                'type'    => 'select',
-                'options' => [
+                'name'       => 'end',
+                'type'       => 'select',
+                'options'    => [
                     'label'         => __('Time end'),
                     'value_options' => Pi::api('api', 'reserve')->timeList(),
                 ],
                 'attributes' => [
-                    'required'    => true,
-                    'class' => 'date-list',
+                    'required' => true,
+                    'class'    => 'date-list',
                 ],
             ]
         );

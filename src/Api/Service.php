@@ -52,11 +52,11 @@ class Service extends AbstractApi
 
     public function getList($params = [])
     {
-        $list    = [];
-        $where   = ['status' => 1];
-        $order   = ['title ASC', 'id ASC'];
-        $select  = Pi::model('service', $this->getModule())->select()->where($where)->order($order);
-        $rowSet  = Pi::model('service', $this->getModule())->selectWith($select);
+        $list   = [];
+        $where  = ['status' => 1];
+        $order  = ['title ASC', 'id ASC'];
+        $select = Pi::model('service', $this->getModule())->select()->where($where)->order($order);
+        $rowSet = Pi::model('service', $this->getModule())->selectWith($select);
         foreach ($rowSet as $row) {
             $list[$row->id] = $this->canonizeService($row);
         }

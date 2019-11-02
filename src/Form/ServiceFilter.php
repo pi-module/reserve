@@ -52,9 +52,9 @@ class ServiceFilter extends InputFilter
         // currency
         $this->add(
             [
-                'name'       => 'currency',
-                'required'   => true,
-                'filters'    => [
+                'name'     => 'currency',
+                'required' => true,
+                'filters'  => [
                     [
                         'name' => 'StringTrim',
                     ],

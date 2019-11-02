@@ -56,9 +56,9 @@ class Holiday extends AbstractApi
     public function getList($params = [])
     {
         // Set info
-        $list    = [];
-        $where   = [];
-        $order   = ['date DESC', 'id DESC'];
+        $list  = [];
+        $where = [];
+        $order = ['date DESC', 'id DESC'];
 
         // Set provider_id
         if (isset($params['provider_id']) && intval($params['provider_id']) > 0) {
@@ -71,8 +71,8 @@ class Holiday extends AbstractApi
         }
 
         // Select
-        $select  = Pi::model('holiday', $this->getModule())->select()->where($where)->order($order);
-        $rowSet  = Pi::model('holiday', $this->getModule())->selectWith($select);
+        $select = Pi::model('holiday', $this->getModule())->select()->where($where)->order($order);
+        $rowSet = Pi::model('holiday', $this->getModule())->selectWith($select);
         foreach ($rowSet as $row) {
             $list[$row->date] = $this->canonizeHoliday($row);
         }

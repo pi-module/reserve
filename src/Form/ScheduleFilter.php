@@ -36,16 +36,16 @@ class ScheduleFilter extends InputFilter
         // provider_id
         $this->add(
             [
-                'name'       => 'provider_id',
-                'required'   => true,
+                'name'     => 'provider_id',
+                'required' => true,
             ]
         );
 
         // service_id
         $this->add(
             [
-                'name'       => 'service_id',
-                'required'   => true,
+                'name'     => 'service_id',
+                'required' => true,
             ]
         );
 
@@ -53,8 +53,8 @@ class ScheduleFilter extends InputFilter
         if ($option['isNew'] && $option['section'] == 'admin') {
             $this->add(
                 [
-                    'name'       => 'payment_status',
-                    'required'   => true,
+                    'name'     => 'payment_status',
+                    'required' => true,
                 ]
             );
         }
@@ -63,8 +63,8 @@ class ScheduleFilter extends InputFilter
         if ($option['isNew'] && $option['section'] == 'admin') {
             $this->add(
                 [
-                    'name'       => 'reserve_status',
-                    'required'   => true,
+                    'name'     => 'reserve_status',
+                    'required' => true,
                 ]
             );
         }
@@ -72,9 +72,9 @@ class ScheduleFilter extends InputFilter
         // reserve_date
         $this->add(
             [
-                'name'     => 'reserve_date',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'reserve_date',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'StringTrim',
                     ],
@@ -88,9 +88,9 @@ class ScheduleFilter extends InputFilter
         // reserve_from
         $this->add(
             [
-                'name'     => 'reserve_from',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'reserve_from',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'StringTrim',
                     ],

@@ -23,6 +23,9 @@ class IndexController extends ActionController
         // Check user is login or not
         Pi::service('authentication')->requireLogin();
 
+        // Check payment and update
+        Pi::api('schedule', 'reserve')->checkPayment();
+
         // Get info from url
         $module = $this->params('module');
         $uid    = Pi::user()->getId();
@@ -34,7 +37,7 @@ class IndexController extends ActionController
         $params = [
             'user_id' => $uid,
             'limit'   => 1000,
-            'page' => 1,
+            'page'    => 1,
         ];
 
         // Get list

@@ -41,7 +41,7 @@ class ServiceController extends ActionController
     {
         // Get info from url
         $module = $this->params('module');
-        $id = $this->params('id');
+        $id     = $this->params('id');
 
         // Get config
         $config = Pi::service('registry')->config->read($module);

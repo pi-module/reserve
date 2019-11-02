@@ -79,9 +79,9 @@ class Api extends AbstractApi
         $config = Pi::service('registry')->config->read('reserve');
 
         // Set info
-        $timeList = [];
+        $timeList     = [];
         $scheduleList = [];
-        $list = ['' => ''];
+        $list         = ['' => ''];
         if (isset($params['type']) && $params['type'] == 'check') {
             // Get time list by date
             $timeList = Pi::api('time', 'reserve')->getTimeByDate($params);

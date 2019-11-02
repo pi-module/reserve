@@ -41,9 +41,9 @@ class TimeFilter extends InputFilter
         // start
         $this->add(
             [
-                'name'     => 'start',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'start',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'StringTrim',
                     ],
@@ -57,9 +57,9 @@ class TimeFilter extends InputFilter
         // end
         $this->add(
             [
-                'name'     => 'end',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'end',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'StringTrim',
                     ],

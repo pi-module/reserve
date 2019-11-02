@@ -42,54 +42,54 @@ class Install extends BasicInstall
         // Set status list
         $statusList = [
             [
-                'type' => 'payment',
+                'type'  => 'payment',
                 'title' => __('Not paid'),
                 'value' => 0,
             ],
             [
-                'type' => 'payment',
+                'type'  => 'payment',
                 'title' => __('Paid'),
                 'value' => 1,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Cancel'),
                 'value' => 0,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Confirmed'),
                 'value' => 1,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Awaiting Payment'),
                 'value' => 2,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Awaiting Confirmed'),
                 'value' => 3,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Visited - Finish'),
                 'value' => 4,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Visited - Set new schedule'),
                 'value' => 5,
             ],
             [
-                'type' => 'reserve',
+                'type'  => 'reserve',
                 'title' => __('Visited - Need extra service'),
                 'value' => 6,
             ],
         ];
 
         // Add status list on table
-        $statusModel  = Pi::model('status', $e->getParam('module'));
+        $statusModel = Pi::model('status', $e->getParam('module'));
         foreach ($statusList as $status) {
             $statusModel->insert($status);
         }

@@ -101,8 +101,8 @@ class ServiceForm extends BaseForm
                 ],
                 'type'       => 'radio',
                 'attributes' => [
-                    'value' => 1,
-                    'required'    => true,
+                    'value'    => 1,
+                    'required' => true,
                 ],
             ]
         );

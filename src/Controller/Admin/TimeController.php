@@ -33,10 +33,10 @@ class TimeController extends ActionController
 
         // Set info
         $timeList = [];
-        $where  = [];
-        $order  = ['date DESC', 'id DESC'];
-        $limit  = intval($config['admin_perpage']);
-        $offset = (int)($page - 1) * $limit;
+        $where    = [];
+        $order    = ['date DESC', 'id DESC'];
+        $limit    = intval($config['admin_perpage']);
+        $offset   = (int)($page - 1) * $limit;
 
         // Get info
         $select = $this->getModel('time')->select()->where($where)->order($order)->offset($offset)->limit($limit);
@@ -88,7 +88,7 @@ class TimeController extends ActionController
 
         // Set option
         $option = [
-            'isNew'   => intval($id) > 0 ? false : true,
+            'isNew' => intval($id) > 0 ? false : true,
         ];
 
         // Set form
