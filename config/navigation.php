@@ -24,7 +24,7 @@ return [
                 'resource' => 'dashboard',
             ],
         ],
-        'schedule'   => [
+        'schedule'  => [
             'label'      => _a('Schedule'),
             'route'      => 'admin',
             'controller' => 'schedule',
@@ -70,7 +70,7 @@ return [
                 ],
             ],
         ],
-        'time'   => [
+        'time'      => [
             'label'      => _a('Time'),
             'route'      => 'admin',
             'controller' => 'time',
@@ -93,7 +93,7 @@ return [
                 ],
             ],
         ],
-        'provider'   => [
+        'provider'  => [
             'label'      => _a('Provider'),
             'route'      => 'admin',
             'controller' => 'provider',

@@ -17,7 +17,7 @@ return [
             'title'  => _a('Dashboard'),
             'access' => [],
         ],
-        'schedule'    => [
+        'schedule'  => [
             'title'  => _a('Schedule'),
             'access' => [],
         ],
@@ -25,11 +25,11 @@ return [
             'title'  => _a('Holiday'),
             'access' => [],
         ],
-        'time'   => [
+        'time'      => [
             'title'  => _a('Time'),
             'access' => [],
         ],
-        'provider'   => [
+        'provider'  => [
             'title'  => _a('Provider'),
             'access' => [],
         ],

@@ -28,7 +28,7 @@ return [
     ],
     'item'     => [
         // Admin
-        'admin_perpage' => [
+        'admin_perpage'   => [
             'category'    => 'admin',
             'title'       => _a('Perpage'),
             'description' => '',
@@ -38,7 +38,7 @@ return [
         ],
 
         // Time
-        'time_start'    => [
+        'time_start'      => [
             'category'    => 'time',
             'title'       => _a('Default start time'),
             'description' => _a('This time used for all days, for set special time for a any day use time section on module admin aria'),
@@ -46,7 +46,7 @@ return [
             'filter'      => 'string',
             'value'       => '16:00',
         ],
-        'time_end'      => [
+        'time_end'        => [
             'category'    => 'time',
             'title'       => _a('Default end time'),
             'description' => _a('This time used for all days, for set special time for a any day use time section on module admin aria'),
@@ -54,7 +54,7 @@ return [
             'filter'      => 'string',
             'value'       => '20:00',
         ],
-        'time_step'    => [
+        'time_step'       => [
             'category'    => 'time',
             'title'       => _a('Reserve time step'),
             'description' => _a('Put time by min'),
@@ -73,7 +73,7 @@ return [
             'filter'      => 'number_int',
             'value'       => 30,
         ],
-        'days'    => [
+        'days'            => [
             'category'    => 'time',
             'title'       => _a('Number of days on calender'),
             'description' => '',
@@ -81,7 +81,7 @@ return [
             'filter'      => 'number_int',
             'value'       => 15,
         ],
-        'payment_reserve'    => [
+        'payment_reserve' => [
             'category'    => 'time',
             'title'       => _a('Allowed time for complete the payment'),
             'description' => _a('Put time by min'),
@@ -91,7 +91,7 @@ return [
         ],
 
         // View
-        'view_perpage' => [
+        'view_perpage'    => [
             'category'    => 'view',
             'title'       => _a('Perpage'),
             'description' => '',
