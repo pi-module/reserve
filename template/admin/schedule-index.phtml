@@ -15,13 +15,17 @@ $this->angular(
     ]
 );
 $this->backbone();
-$this->js([
-    $this->assetModule('script/system-msg.js', 'system')
-]);
-$this->css([
-    $this->assetModule('css/admin.css'),
-    $this->assetModule('script/system-ui.css', 'system'),
-]);
+$this->js(
+    [
+        $this->assetModule('script/system-msg.js', 'system'),
+    ]
+);
+$this->css(
+    [
+        $this->assetModule('css/admin.css'),
+        $this->assetModule('script/system-ui.css', 'system'),
+    ]
+);
 ?>
 <div class="row clearfix pi-item-angular"></div>
 <script>
@@ -58,7 +62,7 @@ $this->css([
                 STATUS: '<?php _e('Status'); ?>',
                 DATE: '<?php _e('Date'); ?>',
                 FROM: '<?php _e('From'); ?>',
-                TO : '<?php _e('To'); ?>',
+                TO: '<?php _e('To'); ?>',
                 EDIT: '<?php _e('Edit'); ?>',
                 PAYMENT: '<?php _e('Payment'); ?>',
                 RESERVE: '<?php _e('Reserve'); ?>',
