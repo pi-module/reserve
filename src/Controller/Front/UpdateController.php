@@ -13,6 +13,8 @@
 
 namespace Module\Reserve\Controller\Front;
 
+use DateInterval;
+use DateTime;
 use Pi;
 use Pi\Mvc\Controller\ActionController;
 use Module\Reserve\Form\ScheduleFilter;
@@ -34,10 +36,27 @@ class UpdateController extends ActionController
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
+        // Get status list
+        $statusList = Pi::registry('statusList', 'reserve')->read();
+
+        // Make payment list
+        $paymentList = [];
+        foreach ($statusList['payment'] as $paymentSingle) {
+            $paymentList[$paymentSingle['value']] = $paymentSingle['title'];
+        }
+
+        // Make reserve list
+        $reserveList = [];
+        foreach ($statusList['reserve'] as $reserveSingle) {
+            $reserveList[$reserveSingle['value']] = $reserveSingle['title'];
+        }
+
         // Set option
         $option = [
             'section' => 'front',
             'isNew'   => true,
+            'paymentList' => $paymentList,
+            'reserveList' => $reserveList,
         ];
 
         // Set form
@@ -50,12 +69,45 @@ class UpdateController extends ActionController
             if ($form->isValid()) {
                 $values = $form->getData();
 
-                d($values);
+                // Set request date
+                $requestDate = sprintf('%s %s', $values['reserve_date'], $values['reserve_from']);
 
+                // Set reserve_to
+                $time = new DateTime($requestDate);
+                $time->add(new DateInterval(sprintf('PT%sM', $config['time_step'])));
+                $values['reserve_to'] = $time->format('H:i');
+
+                // Set reserve_time
+                $values['reserve_time'] = strtotime($requestDate);
+
+                // Set amount
+                $serviceList        = Pi::registry('serviceList', 'reserve')->read();
+                $values['amount']   = $serviceList[$values['service_id']]['amount'];
+                $values['currency'] = $serviceList[$values['service_id']]['currency'];
+
+                // Set values
+                $values['user_id']   = Pi::user()->getId();
+                $values['update_by']   = Pi::user()->getId();
+                $values['create_by']   = Pi::user()->getId();
+                $values['time_create'] = time();
+                $values['time_update'] = time();
+
+                // Save values
+                $row = $this->getModel('schedule')->createRow();
+                $row->assign($values);
+                $row->save();
+
+                // Set schedule
+                $schedule = Pi::api('schedule', 'reserve')->canonizeSchedule($row);
+
+                // Set order
+                $url = Pi::api('order', 'reserve')->add($schedule);
+
+                Pi::service('url')->redirect($url);
 
                 // Jump
                 //$message = __('Schedule data saved successfully.');
-                //$this->jump(['action' => 'index'], $message, 'success');
+                //$this->jump(['controller' => 'index', 'action' => 'index'], $message, 'success');
             }
         }
 
@@ -126,7 +178,7 @@ class UpdateController extends ActionController
                 'result' => true,
                 'data'   => $list,
                 'error'  => [],
-                'p' => $params,
+                'p'      => $params,
             ];
 
         } else {

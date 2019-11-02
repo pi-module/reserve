@@ -59,9 +59,6 @@ class ServiceFilter extends InputFilter
                         'name' => 'StringTrim',
                     ],
                 ],
-                'validators' => [
-                    new \Module\Reserve\Validator\Amount,
-                ],
             ]
         );
 

@@ -141,6 +141,7 @@ class ScheduleController extends ActionController
     {
         // Get info from url
         $module = $this->params('module');
+        $id = $this->params('id');
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
@@ -148,10 +149,13 @@ class ScheduleController extends ActionController
         // Check payment and update
         Pi::api('schedule', 'reserve')->checkPayment();
 
+        // Get schedule
+        $schedule = Pi::api('schedule', 'reserve')->getSchedule($id);
 
         // Set view
         $this->view()->setTemplate('schedule-view');
         $this->view()->assign('config', $config);
+        $this->view()->assign('schedule', $schedule);
     }
 
     public function searchAction()

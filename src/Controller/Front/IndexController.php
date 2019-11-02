@@ -25,13 +25,24 @@ class IndexController extends ActionController
 
         // Get info from url
         $module = $this->params('module');
+        $uid    = Pi::user()->getId();
 
         // Get config
         $config = Pi::service('registry')->config->read($module);
 
+        // Set list params
+        $params = [
+            'user_id' => $uid,
+            'limit'   => 1000,
+            'page' => 1,
+        ];
+
+        // Get list
+        $scheduleList = Pi::api('schedule', 'reserve')->getList($params);
 
         // Set view
         $this->view()->setTemplate('reserve-index');
         $this->view()->assign('config', $config);
+        $this->view()->assign('scheduleList', $scheduleList);
     }
 }

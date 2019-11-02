@@ -51,6 +51,14 @@ class Schedule extends AbstractApi
             $schedule = $schedule->toArray();
         }
 
+        $schedule['title'] = sprintf(
+            __('Reservation by %s on %s from %s to %'),
+            $schedule['provider_title'],
+            $schedule['reserve_date_view'],
+            $schedule['reserve_from'],
+            $schedule['reserve_to']
+        );
+
         // Set provider_title
         $schedule['provider_title'] = $providerList[$schedule['provider_id']]['title'];
 
@@ -67,8 +75,10 @@ class Schedule extends AbstractApi
         $schedule['reserve_status_view'] = $statusList['reserve'][$schedule['reserve_status']]['title'];
 
         // Set urls
-        $schedule['urlEdit']   = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
-        $schedule['urlStatus'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id']]));
+        $schedule['urlEdit']      = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
+        $schedule['urlStatus']    = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id']]));
+        $schedule['urlViewAdmin'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'view', 'id' => $schedule['id']]));
+        $schedule['urlViewFront'] = Pi::url(Pi::service('url')->assemble('default', ['controller' => 'view', 'action' => 'index', 'id' => $schedule['id']]));
 
         return $schedule;
     }
@@ -94,7 +104,7 @@ class Schedule extends AbstractApi
         // Set info
         $limit  = isset($params['limit']) ? $params['limit'] : 25;
         $offset = (int)($params['page'] - 1) * $limit;
-        $order  = ['schedule.reserve_from  desc', 'schedule.id desc'];
+        $order  = ['schedule.reserve_date  desc', 'schedule.id desc'];
         $where  = ['account.active' => 1];
         if (isset($params['user_id']) && !empty($params['user_id'])) {
             $where['schedule.user_id'] = $params['user_id'];

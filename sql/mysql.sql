@@ -15,7 +15,7 @@ CREATE TABLE `{schedule}`
     `reserve_from`      VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `reserve_to`        VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `amount`            DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
-    `currency`          VARCHAR(8)          NOT NULL DEFAULT NULL,
+    `currency`          VARCHAR(8)          NOT NULL DEFAULT 'USD',
     `payment_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
     `reserve_status`    TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
     `order_id`          INT(10) UNSIGNED    NOT NULL DEFAULT '0',

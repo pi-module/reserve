@@ -24,7 +24,7 @@ $script = <<<'EOT'
                 let date = $('.date-list').val();
                 let provider = $('.provider-list').val();
                 let service = $('.service-list').val();
-                let url = '%s/date/' + date + '/provider/' + provider + '/service/' + service;
+                let url = '%s/date-' + date + '/provider-' + provider + '/service-' + service;
                 console.log(url);
                 $.getJSON(url).done(function (result) {
                     $('.hour-list').html('');
