@@ -104,7 +104,7 @@ class Schedule extends AbstractApi
         // Set info
         $limit  = isset($params['limit']) ? $params['limit'] : 25;
         $offset = (int)($params['page'] - 1) * $limit;
-        $order  = ['schedule.reserve_date  desc', 'schedule.id desc'];
+        $order  = ['schedule.reserve_date DESC', 'schedule.id DESC'];
         $where  = ['account.active' => 1];
         if (isset($params['user_id']) && !empty($params['user_id'])) {
             $where['schedule.user_id'] = $params['user_id'];
