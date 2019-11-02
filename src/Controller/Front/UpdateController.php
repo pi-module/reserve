@@ -103,6 +103,7 @@ class UpdateController extends ActionController
                 // Set order
                 $url = Pi::api('order', 'reserve')->add($schedule);
 
+                // Redirect to checkout page
                 Pi::service('url')->redirect($url);
 
                 // Jump
