@@ -45,6 +45,7 @@ class Order extends AbstractApi
         // Set order array
         $order                           = [];
         $order['module_name']            = $this->getModule();
+        $order['module_table']           = 'schedule';
         $order['type_payment']           = 'onetime';
         $order['type_commodity']         = 'service';
         $order['can_pay']                = 1;
