@@ -86,11 +86,12 @@ class UpdateController extends ActionController
                 $values['currency'] = $serviceList[$values['service_id']]['currency'];
 
                 // Set values
-                $values['user_id']     = Pi::user()->getId();
-                $values['update_by']   = Pi::user()->getId();
-                $values['create_by']   = Pi::user()->getId();
-                $values['time_create'] = time();
-                $values['time_update'] = time();
+                $values['user_id']        = Pi::user()->getId();
+                $values['update_by']      = Pi::user()->getId();
+                $values['create_by']      = Pi::user()->getId();
+                $values['time_create']    = time();
+                $values['time_update']    = time();
+                $values['reserve_status'] = 2;
 
                 // Save values
                 $row = $this->getModel('schedule')->createRow();
@@ -181,6 +182,93 @@ class UpdateController extends ActionController
         } else {
             $result['error']['message'] = __('No any reserve time available on your selected date');
         }
+
+        return $result;
+    }
+
+    public function cancelAction()
+    {
+        // Check user is login or not
+        Pi::service('authentication')->requireLogin();
+
+        // Check user is login or not
+        Pi::service('authentication')->requireLogin();
+
+        // Set default result
+        $result = [
+            'result' => false,
+            'data'   => [],
+            'error'  => [
+                'code'    => 1,
+                'message' => __('Nothing selected'),
+            ],
+        ];
+
+        // Get info from url
+        $module = $this->params('module');
+        $id     = $this->params('id');
+        $uid    = Pi::user()->getId();
+
+        // Get config
+        $config = Pi::service('registry')->config->read($module);
+
+        // Get schedule
+        $schedule = Pi::api('schedule', 'reserve')->getSchedule($id);
+
+        // Check schedule exit
+        if (!$schedule || empty($schedule)) {
+            $result['error']['message'] = __('Selected schedule not exit !');
+            return $result;
+        }
+
+        // Check schedule user
+        if (intval($schedule['user_id']) !== intval($uid)) {
+            $result['error']['message'] = __('This is not your schedule !');
+            return $result;
+        }
+
+        // Check schedule user
+        if (!
+        ['cancel_user']) {
+            $result['error']['message'] = __('You can not cancel this schedule !');
+            return $result;
+        }
+
+        // Update schedule
+        Pi::model('schedule', $this->getModule())->update(
+            [
+                'reserve_status' => 0,
+                'update_by'      => $uid,
+                'time_update'    => time(),
+            ],
+            [
+                'id' => $schedule['id'],
+            ]
+        );
+
+        // Set message
+        $message = __('Schedule canceled successfully !');
+
+        // Update credit
+        if (intval($schedule['payment_status']) == 1) {
+            // Set message
+            $message       = __('Schedule canceled successfully ! And paid amount add as credit to your account');
+            $messageCredit = __('Increase credit for cancel schedule by user');
+
+            // Update credit
+            Pi::api('credit', 'order')->addCredit($uid, $schedule['amount'], 'increase', 'automatic', $messageCredit, $messageCredit);
+        }
+
+        // Set result
+        $result = [
+            'result' => true,
+            'data'   => [
+                'message' => $message,
+                'id'      => $schedule['id'],
+                'text'    => __('Cancel'),
+            ],
+            'error'  => [],
+        ];
 
         return $result;
     }

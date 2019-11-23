@@ -97,6 +97,7 @@ class Order extends AbstractApi
         Pi::model('schedule', $this->getModule())->update(
             [
                 'payment_status' => 1,
+                'reserve_status' => 1,
                 'order_id'       => $order['id'],
             ],
             [

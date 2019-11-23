@@ -33,7 +33,7 @@ class Schedule extends AbstractApi
         return $this->canonizeSchedule($schedule);
     }
 
-    public function canonizeSchedule($schedule, $providerList = [], $statusList = [])
+    public function canonizeSchedule($schedule, $providerList = [], $serviceList = [], $statusList = [])
     {
         // Check
         if (empty($schedule)) {
@@ -43,6 +43,9 @@ class Schedule extends AbstractApi
         // Set provider list
         $providerList = empty($providerList) ? Pi::registry('providerList', 'reserve')->read() : $providerList;
 
+        // Set provider list
+        $serviceList = empty($providerList) ? Pi::registry('serviceList', 'reserve')->read() : $serviceList;
+
         // Set status list
         $statusList = empty($statusList) ? Pi::registry('statusList', 'reserve')->read() : $statusList;
 
@@ -51,16 +54,17 @@ class Schedule extends AbstractApi
             $schedule = $schedule->toArray();
         }
 
-        $schedule['title'] = sprintf(
-            __('Reservation by %s on %s from %s to %'),
-            $schedule['provider_title'],
-            $schedule['reserve_date_view'],
-            $schedule['reserve_from'],
-            $schedule['reserve_to']
-        );
+        // Set cancel by user
+        $schedule['cancel_user'] = false;
+        if (in_array($schedule['reserve_status'], [1, 2]) && $schedule['reserve_time'] > (time() + (60 * 60 * 24 * 3))) {
+            $schedule['cancel_user'] = true;
+        }
 
         // Set provider_title
         $schedule['provider_title'] = $providerList[$schedule['provider_id']]['title'];
+
+        // Set service title
+        $schedule['service_title'] = $serviceList[$schedule['service_id']]['title'];
 
         // Set amount_view
         $schedule['amount_view'] = _currency($schedule['amount'], $schedule['currency']);
@@ -74,11 +78,45 @@ class Schedule extends AbstractApi
         // reserve_status_view
         $schedule['reserve_status_view'] = $statusList['reserve'][$schedule['reserve_status']]['title'];
 
+        // Set title
+        $schedule['title'] = sprintf(
+            __('Reservation by %s for %s  on %s from %s to %s'),
+            $schedule['provider_title'],
+            $schedule['service_title'],
+            $schedule['reserve_date_view'],
+            $schedule['reserve_from'],
+            $schedule['reserve_to']
+        );
+
         // Set urls
         $schedule['urlEdit']      = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
         $schedule['urlStatus']    = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id']]));
         $schedule['urlViewAdmin'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'view', 'id' => $schedule['id']]));
         $schedule['urlViewFront'] = Pi::url(Pi::service('url')->assemble('default', ['controller' => 'view', 'action' => 'index', 'id' => $schedule['id']]));
+        $schedule['urlCancel']    = Pi::url(Pi::service('url')->assemble('default', ['controller' => 'update', 'action' => 'cancel', 'id' => $schedule['id']]));
+
+        // Set css class
+        $schedule['card_class'] = '';
+        switch ($schedule['reserve_status']) {
+            case 0:
+                $schedule['card_class'] = 'text-white bg-danger special-card';
+                break;
+
+            case 1:
+                $schedule['card_class'] = 'text-white bg-success special-card';
+                break;
+
+            case 2:
+                $schedule['card_class'] = 'text-white bg-warning special-card';
+                break;
+
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                $schedule['card_class'] = 'text-white bg-info special-card';
+                break;
+        }
 
         return $schedule;
     }
@@ -178,7 +216,7 @@ class Schedule extends AbstractApi
         $list = [];
         foreach ($rowSet as $row) {
             // Set to list
-            $list[] = $this->canonizeSchedule($row, $providerList, $statusList);
+            $list[] = $this->canonizeSchedule($row, $providerList, $serviceList, $statusList);
         }
 
         // Set count
@@ -243,7 +281,7 @@ class Schedule extends AbstractApi
         $list  = [];
         $where = [
             'reserve_date'   => $params['date'],
-            'reserve_status' => [1, 2, 3],
+            'reserve_status' => [1, 2],
         ];
         if (isset($params['service_id']) && intval($params['service_id']) > 0) {
             $where['service_id'] = $params['service_id'];

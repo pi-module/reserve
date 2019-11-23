@@ -140,3 +140,7 @@
 .header_title, .ei_Title, .ce_title {
     color: #fff;
 }
+
+.special-card {
+    background-color: rgba(245, 245, 245, 0.4) !important;
+}

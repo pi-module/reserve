@@ -68,11 +68,6 @@ class Install extends BasicInstall
             ],
             [
                 'type'  => 'reserve',
-                'title' => __('Awaiting Confirmed'),
-                'value' => 3,
-            ],
-            [
-                'type'  => 'reserve',
                 'title' => __('Visited - Finish'),
                 'value' => 4,
             ],

@@ -100,8 +100,9 @@ class ScheduleController extends ActionController
 
                 // Set values
                 if (empty($id)) {
-                    $values['create_by']   = Pi::user()->getId();
-                    $values['time_create'] = time();
+                    $values['create_by']      = Pi::user()->getId();
+                    $values['time_create']    = time();
+                    $values['reserve_status'] = 2;
 
                 }
                 $values['update_by']   = Pi::user()->getId();
