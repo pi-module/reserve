@@ -157,7 +157,7 @@ class ScheduleForm extends BaseForm
                 'type'       => 'submit',
                 'attributes' => [
                     'value' => __('Submit'),
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-secondary',
                 ],
             ]
         );

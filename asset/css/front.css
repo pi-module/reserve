@@ -16,23 +16,24 @@
     top: 150px;
 }
 
+.select2 {
+    width: 100% !important;
+}
+
 /* */
 .light {
-    background-color: #fff;
+    background-color: #2f89fc;
 }
 
-.dark {
-    margin-left: 65px;
-    margin-right: 65px;
-}
+.dark {}
 
 .calendar {
-    width: 550px;
     box-shadow: 0px 0px 35px -16px rgba(0, 0, 0, 0.75);
     font-family: 'Roboto', sans-serif;
     padding: 20px 30px;
-    color: #363b41;
-    display: inline-block;
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .calendar_header {
@@ -40,7 +41,7 @@
 }
 
 .header_copy {
-    color: #A39D9E;
+    color: #fff;
     font-size: 20px;
 }
 
@@ -51,7 +52,7 @@
 .cl_plan {
     width: 100%;
     height: 140px;
-    background-image: linear-gradient(-222deg, #FF8494, #ffa9b7);
+    background-image: linear-gradient(-222deg, #ff8000, #FF9B3B);
     box-shadow: 0px 0px 52px -18px rgba(0, 0, 0, 0.75);
     padding: 30px;
     color: #fff;
@@ -75,12 +76,12 @@
     background-color: #fff;
     cursor: pointer;
     margin: 0 0 0 65px;
-    color: #c2c2c2;
+    color: #fff;
     padding: 11px 13px;
 }
 
 .calendar_events {
-    color: #A39D9E;
+    color: #fff !important;
 }
 
 .ce_title {
@@ -94,7 +95,7 @@
 }
 
 .event_item:hover {
-    background-image: linear-gradient(-222deg, #FF8494, #ffa9b7);
+    background-image: linear-gradient(-222deg, #ff8000, #FF9B3B);
     box-shadow: 0px 0px 52px -18px rgba(0, 0, 0, 0.75);
 }
 
@@ -143,4 +144,8 @@
 
 .special-card {
     background-color: rgba(245, 245, 245, 0.4) !important;
+}
+
+h1.header_title {
+    font-size: 28px !important;
 }
