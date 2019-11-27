@@ -30,6 +30,51 @@ class Order extends AbstractApi
 {
     public function add($params)
     {
+        // Find address
+        $addressList = Pi::api('customerAddress', 'order')->findAddresses($params['user_id']);
+
+        // Add address
+        if (empty($addressList)) {
+            // Set user fields
+            $fields = [
+                'id', 'identity', 'name', 'email', 'first_name', 'last_name', 'id_number', 'phone', 'mobile', 'credit',
+                'address1', 'address2', 'country', 'state', 'city', 'zip_code', 'company', 'company_id', 'company_vat',
+            ];
+
+            // Get user info
+            $user = Pi::user()->get($params['user_id'], $fields);
+
+            // Set address value
+            $address = [
+                'uid'          => $user['id'],
+                'id_number'    => $user['id_number'],
+                'first_name'   => $user['first_name'],
+                'last_name'    => $user['last_name'],
+                'email'        => $user['email'],
+                'phone'        => $user['phone'],
+                'mobile'       => $user['mobile'],
+                'address1'     => $user['address1'],
+                'address2'     => $user['address2'],
+                'country'      => $user['country'],
+                'state'        => $user['state'],
+                'city'         => $user['city'],
+                'zip_code'     => $user['zip_code'],
+                'company'      => $user['company'],
+                'company_id'   => $user['company_id'],
+                'company_vat'  => $user['company_vat'],
+                'time_create'  => time(),
+                'time_update'  => time(),
+                'ip'           => Pi::user()->getIp(),
+                'status'       => 1,
+                'delivery'     => 0,
+                'location'     => 0,
+                'account_type' => 'individual',
+            ];
+
+            // Add address
+            Pi::api('customerAddress', 'order')->addAddress($address);
+        }
+
         // Set single product
         $singleProduct = [
             'product'        => $params['id'],

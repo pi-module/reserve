@@ -283,9 +283,9 @@ class Schedule extends AbstractApi
             'reserve_date'   => $params['date'],
             'reserve_status' => [1, 2],
         ];
-        if (isset($params['service_id']) && intval($params['service_id']) > 0) {
-            $where['service_id'] = $params['service_id'];
-        }
+        //if (isset($params['service_id']) && intval($params['service_id']) > 0) {
+        //    $where['service_id'] = $params['service_id'];
+        //}
         if (isset($params['provider_id']) && intval($params['provider_id']) > 0) {
             $where['provider_id'] = $params['provider_id'];
         }
