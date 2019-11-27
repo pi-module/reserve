@@ -266,6 +266,7 @@ class UpdateController extends ActionController
                 'message' => $message,
                 'id'      => $schedule['id'],
                 'text'    => __('Cancel'),
+                'css'     => 'badge badge-danger',
             ],
             'error'  => [],
         ];

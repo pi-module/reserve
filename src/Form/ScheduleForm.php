@@ -139,13 +139,14 @@ class ScheduleForm extends BaseForm
         $this->add(
             [
                 'name'       => 'reserve_from',
-                'type'       => 'description',
+                'type'       => 'select',
                 'options'    => [
                     'label' => __('Select hour'),
+                    'value_options' => [],
                 ],
                 'attributes' => [
-                    'description' => '<div class="hour-list"></div>',
                     'required'    => true,
+                    'class'    => 'hour-list chosen-select',
                 ],
             ]
         );

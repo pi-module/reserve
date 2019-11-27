@@ -44,7 +44,7 @@ class Schedule extends AbstractApi
         $providerList = empty($providerList) ? Pi::registry('providerList', 'reserve')->read() : $providerList;
 
         // Set provider list
-        $serviceList = empty($providerList) ? Pi::registry('serviceList', 'reserve')->read() : $serviceList;
+        $serviceList = empty($serviceList) ? Pi::api('service', 'reserve')->getList() : $serviceList;
 
         // Set status list
         $statusList = empty($statusList) ? Pi::registry('statusList', 'reserve')->read() : $statusList;
@@ -89,25 +89,59 @@ class Schedule extends AbstractApi
         );
 
         // Set urls
-        $schedule['urlEdit']      = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id']]));
-        $schedule['urlStatus']    = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id']]));
-        $schedule['urlViewAdmin'] = Pi::url(Pi::service('url')->assemble('', ['controller' => 'schedule', 'action' => 'view', 'id' => $schedule['id']]));
-        $schedule['urlViewFront'] = Pi::url(Pi::service('url')->assemble('default', ['controller' => 'view', 'action' => 'index', 'id' => $schedule['id']]));
-        $schedule['urlCancel']    = Pi::url(Pi::service('url')->assemble('default', ['controller' => 'update', 'action' => 'cancel', 'id' => $schedule['id']]));
+        $schedule['urlEdit']      = Pi::url(
+            Pi::service('url')->assemble(
+                '', [
+                'controller' => 'schedule', 'action' => 'update', 'id' => $schedule['id'],
+            ]
+            )
+        );
+        $schedule['urlStatus']    = Pi::url(
+            Pi::service('url')->assemble(
+                '', [
+                'controller' => 'schedule', 'action' => 'status', 'id' => $schedule['id'],
+            ]
+            )
+        );
+        $schedule['urlViewAdmin'] = Pi::url(
+            Pi::service('url')->assemble(
+                '', [
+                'controller' => 'schedule', 'action' => 'view', 'id' => $schedule['id'],
+            ]
+            )
+        );
+        $schedule['urlViewFront'] = Pi::url(
+            Pi::service('url')->assemble(
+                'default', [
+                'module' => 'reserve', 'controller' => 'view', 'action' => 'index', 'id' => $schedule['id'],
+            ]
+            )
+        );
+        $schedule['urlCancel']    = Pi::url(
+            Pi::service('url')->assemble(
+                'default', [
+                'module' => 'reserve', 'controller' => 'update', 'action' => 'cancel', 'id' => $schedule['id'],
+            ]
+            )
+        );
 
         // Set css class
         $schedule['card_class'] = '';
+        $schedule['reserve_class'] = '';
         switch ($schedule['reserve_status']) {
             case 0:
                 $schedule['card_class'] = 'text-white bg-danger special-card';
+                $schedule['breserve_class'] = 'badge badge-danger';
                 break;
 
             case 1:
                 $schedule['card_class'] = 'text-white bg-success special-card';
+                $schedule['reserve_class'] = 'badge badge-success';
                 break;
 
             case 2:
                 $schedule['card_class'] = 'text-white bg-warning special-card';
+                $schedule['reserve_class'] = 'badge badge-warning';
                 break;
 
             case 3:
@@ -115,8 +149,23 @@ class Schedule extends AbstractApi
             case 5:
             case 6:
                 $schedule['card_class'] = 'text-white bg-info special-card';
+                $schedule['reserve_class'] = 'badge badge-info';
                 break;
         }
+
+        // set css class
+        $schedule['payment_class'] = '';
+        switch ($schedule['payment_status']) {
+            case 0:
+                $schedule['payment_class'] = 'badge badge-danger';
+                break;
+
+            case 1:
+                $schedule['payment_class'] = 'badge badge-success';
+                break;
+        }
+
+        d($schedule);
 
         return $schedule;
     }

@@ -47,21 +47,21 @@ class Order extends AbstractApi
             // Set address value
             $address = [
                 'uid'          => $user['id'],
-                'id_number'    => $user['id_number'],
-                'first_name'   => $user['first_name'],
-                'last_name'    => $user['last_name'],
-                'email'        => $user['email'],
-                'phone'        => $user['phone'],
-                'mobile'       => $user['mobile'],
-                'address1'     => $user['address1'],
-                'address2'     => $user['address2'],
-                'country'      => $user['country'],
-                'state'        => $user['state'],
-                'city'         => $user['city'],
-                'zip_code'     => $user['zip_code'],
-                'company'      => $user['company'],
-                'company_id'   => $user['company_id'],
-                'company_vat'  => $user['company_vat'],
+                'id_number'    => empty($user['id_number']) ? '' : $user['id_number'],
+                'first_name'   => empty($user['first_name']) ? '' : $user['first_name'],
+                'last_name'    => empty($user['last_name']) ? '' : $user['last_name'],
+                'email'        => empty($user['email']) ? '' : $user['email'],
+                'phone'        => empty($user['phone']) ? '' : $user['phone'],
+                'mobile'       => empty($user['mobile']) ? '' : $user['mobile'],
+                'address1'     => empty($user['address1']) ? '' : $user['address1'],
+                'address2'     => empty($user['address2']) ? '' : $user['address2'],
+                'country'      => empty($user['country']) ? '' : $user['country'],
+                'state'        => empty($user['state']) ? '' : $user['state'],
+                'city'         => empty($user['city']) ? '' : $user['city'],
+                'zip_code'     => empty($user['zip_code']) ? '' : $user['zip_code'],
+                'company'      => empty($user['company']) ? '' : $user['company'],
+                'company_id'   => empty($user['company_id']) ? '' : $user['company_id'],
+                'company_vat'  => empty($user['company_vat']) ? '' : $user['company_vat'],
                 'time_create'  => time(),
                 'time_update'  => time(),
                 'ip'           => Pi::user()->getIp(),
@@ -150,19 +150,7 @@ class Order extends AbstractApi
             ]
         );
 
-        // Set back url
-        $url = Pi::url(
-            Pi::service('url')->assemble(
-                'order', [
-                    'module'     => 'order',
-                    'controller' => 'detail',
-                    'action'     => 'index',
-                    'id'         => $order['id'],
-                ]
-            )
-        );
-
-        return $url;
+        return $schedule['urlViewFront'];
     }
 
     public function createExtraDetailForProduct($values)
@@ -177,5 +165,12 @@ class Order extends AbstractApi
     public function getExtraFieldsFormForOrder()
     {
         return [];
+    }
+
+    public function isAlwaysAvailable($order)
+    {
+        return array(
+            'status' => 1
+        );
     }
 }
