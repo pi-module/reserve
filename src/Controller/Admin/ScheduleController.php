@@ -85,18 +85,19 @@ class ScheduleController extends ActionController
                 // Set request date
                 $requestDate = sprintf('%s %s', $values['reserve_date'], $values['reserve_from']);
 
+                // Set amount
+                $serviceList                = Pi::registry('serviceList', 'reserve')->read();
+                $values['amount']           = $serviceList[$values['service_id']]['amount'];
+                $values['currency']         = $serviceList[$values['service_id']]['currency'];
+                $values['reserve_duration'] = $serviceList[$values['service_id']]['duration'];
+
                 // Set reserve_to
                 $time = new DateTime($requestDate);
-                $time->add(new DateInterval(sprintf('PT%sM', $config['time_step'])));
+                $time->add(new DateInterval(sprintf('PT%sM', $values['reserve_duration'])));
                 $values['reserve_to'] = $time->format('H:i');
 
                 // Set reserve_time
                 $values['reserve_time'] = strtotime($requestDate);
-
-                // Set amount
-                $serviceList        = Pi::registry('serviceList', 'reserve')->read();
-                $values['amount']   = $serviceList[$values['service_id']]['amount'];
-                $values['currency'] = $serviceList[$values['service_id']]['currency'];
 
                 // Set values
                 if (empty($id)) {

@@ -24,6 +24,7 @@ class Service extends Model
         = [
             'id',
             'title',
+            'duration',
             'amount',
             'currency',
             'status',

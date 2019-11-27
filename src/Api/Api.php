@@ -78,6 +78,12 @@ class Api extends AbstractApi
         // Get config
         $config = Pi::service('registry')->config->read('reserve');
 
+        // Get service list
+        $serviceList = Pi::registry('serviceList', 'reserve')->read();
+
+        // Set step
+        $params['step'] = $serviceList[$params['service_id']]['duration'] * 60;
+
         // Set info
         $timeList     = [];
         $scheduleList = [];
@@ -105,9 +111,6 @@ class Api extends AbstractApi
         // Set start
         $params['time_start'] = strtotime($params['time_start']) - strtotime('TODAY');
         $params['time_end']   = strtotime($params['time_end']) - strtotime('TODAY');
-
-        // Set step
-        $params['step'] = (isset($params['step']) ? $params['step'] : $config['time_step']) * 60;
 
         // Make list
         foreach (range($params['time_start'], $params['time_end'], $params['step']) as $increment) {

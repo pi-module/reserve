@@ -34,6 +34,7 @@ class Schedule extends Model
             'time_update',
             'reserve_time',
             'reserve_date',
+            'reserve_duration',
             'reserve_from',
             'reserve_to',
             'amount',

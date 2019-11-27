@@ -54,25 +54,6 @@ return [
             'filter'      => 'string',
             'value'       => '20:00',
         ],
-        'time_step'       => [
-            'category'    => 'time',
-            'title'       => _a('Reserve time step'),
-            'description' => _a('Put time by min'),
-            'edit'        => [
-                'type'    => 'select',
-                'options' => [
-                    'options' => [
-                        15 => _a('15 min'),
-                        20 => _a('20 min'),
-                        30 => _a('30 min'),
-                        45 => _a('45 min'),
-                        60 => _a('60 min'),
-                    ],
-                ],
-            ],
-            'filter'      => 'number_int',
-            'value'       => 30,
-        ],
         'days'            => [
             'category'    => 'time',
             'title'       => _a('Number of days on calender'),

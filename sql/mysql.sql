@@ -12,6 +12,7 @@ CREATE TABLE `{schedule}`
     `time_update`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `reserve_time`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
     `reserve_date`      DATE                NULL     DEFAULT NULL,
+    `reserve_duration`  INT(10) UNSIGNED    NOT NULL DEFAULT '15',
     `reserve_from`      VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `reserve_to`        VARCHAR(8)          NOT NULL DEFAULT '00:00',
     `amount`            DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
@@ -54,6 +55,7 @@ CREATE TABLE `{service}`
 (
     `id`       INT(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
     `title`    VARCHAR(255)        NOT NULL DEFAULT '',
+    `duration` INT(10) UNSIGNED    NOT NULL DEFAULT '15',
     `amount`   DECIMAL(16, 2)      NOT NULL DEFAULT '0.00',
     `currency` VARCHAR(8)          NOT NULL DEFAULT 'USD',
     `status`   TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',

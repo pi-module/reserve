@@ -48,6 +48,26 @@ class ServiceForm extends BaseForm
             ]
         );
 
+        // currency
+        $this->add(
+            [
+                'name'       => 'duration',
+                'type'       => 'select',
+                'options'    => [
+                    'label'         => __('Duration'),
+                    'value_options' => [
+                        15 => __('15 min'),
+                        30 => __('30 min'),
+                        60 => __('60 min'),
+                    ],
+                ],
+                'attributes' => [
+                    'required' => true,
+                    'class'    => 'date-list chosen-select',
+                ],
+            ]
+        );
+
         // amount
         $this->add(
             [
