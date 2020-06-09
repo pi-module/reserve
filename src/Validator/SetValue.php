@@ -14,7 +14,7 @@
 namespace Module\Reserve\Validator;
 
 use Pi;
-use Zend\Validator\AbstractValidator;
+use Laminas\Validator\AbstractValidator;
 
 class SetValue extends AbstractValidator
 {

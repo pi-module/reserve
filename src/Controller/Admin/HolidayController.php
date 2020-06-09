@@ -18,7 +18,7 @@ use Pi\Mvc\Controller\ActionController;
 use Pi\Paginator\Paginator;
 use Module\Reserve\Form\HolidayForm;
 use Module\Reserve\Form\HolidayFilter;
-use Zend\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Predicate\Expression;
 
 class HolidayController extends ActionController
 {

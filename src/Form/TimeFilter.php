@@ -14,7 +14,7 @@
 namespace Module\Reserve\Form;
 
 use Pi;
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 class TimeFilter extends InputFilter
 {

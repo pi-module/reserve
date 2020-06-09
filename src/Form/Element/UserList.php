@@ -14,8 +14,8 @@
 namespace Module\Reserve\Form\Element;
 
 use Pi;
-use Zend\Form\Element\Select;
-use Zend\Db\Sql\Predicate\Expression;
+use Laminas\Form\Element\Select;
+use Laminas\Db\Sql\Predicate\Expression;
 
 class UserList extends Select
 {
