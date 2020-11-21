@@ -105,6 +105,9 @@ class Order extends AbstractApi
         return Pi::api('order', 'order')->setOrderInfo($order);
     }
 
+    /*
+     * Start Order module needed functions
+     */
     public function checkProduct($id, $type = null)
     {
         $schedule = Pi::api('schedule', 'reserve')->getSchedule($id);
@@ -112,6 +115,16 @@ class Order extends AbstractApi
             return false;
         }
         return true;
+    }
+
+    public function getInstallmentDueDate($cart = [], $composition = [100])
+    {
+        return null;
+    }
+
+    public function getInstallmentComposition($extra = [])
+    {
+        return [100];
     }
 
     public function getProductDetails($id)
@@ -130,13 +143,21 @@ class Order extends AbstractApi
         return $productOrder;
     }
 
-    public function postPaymentUpdate($order, $basket)
+    public function postPaymentUpdate($order, $detail)
     {
+        // Get config
+        $config = Pi::service('registry')->config->read($this->getModule());
+
+        // Update company
+        if (empty($detail)) {
+            return false;
+        }
+
         // Set basket
-        $basket = array_shift($basket);
+        $detail = array_shift($detail);
 
         // Get product
-        $schedule = Pi::api('schedule', 'reserve')->getSchedule($basket['product']);
+        $schedule = Pi::api('schedule', 'reserve')->getSchedule(intval($detail['product']));
 
         // Update schedule
         Pi::model('schedule', $this->getModule())->update(
@@ -169,8 +190,18 @@ class Order extends AbstractApi
 
     public function isAlwaysAvailable($order)
     {
-        return array(
-            'status' => 1
-        );
+        return [
+            'status' => 1,
+        ];
+    }
+
+    public function showInInvoice($order, $product)
+    {
+        return true;
+    }
+
+    public function postCancelUpdate($order, $detail)
+    {
+        return true;
     }
 }
