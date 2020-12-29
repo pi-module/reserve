@@ -179,7 +179,6 @@ class UpdateController extends ActionController
                 'error'  => [],
                 'p'      => $params,
             ];
-
         } else {
             $result['error']['message'] = __('No any reserve time available on your selected date');
         }

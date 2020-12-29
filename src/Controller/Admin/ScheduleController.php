@@ -104,7 +104,6 @@ class ScheduleController extends ActionController
                     $values['create_by']      = Pi::user()->getId();
                     $values['time_create']    = time();
                     $values['reserve_status'] = 2;
-
                 }
                 $values['update_by']   = Pi::user()->getId();
                 $values['time_update'] = time();
@@ -235,7 +234,6 @@ class ScheduleController extends ActionController
                 'error'  => [],
                 'p'      => $params,
             ];
-
         } else {
             $result['error']['message'] = __('No any reserve time available on your selected date');
         }
